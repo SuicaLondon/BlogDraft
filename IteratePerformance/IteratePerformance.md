@@ -146,3 +146,22 @@ console.log(list.keys())
 console.log(list.keys().next())
 // { value: 0, done: false }
 ```
+
+## ES2016 and later
+ECMAScript is still trying to introduce more APIs to facilitate the development and solve existing problems.
+### includes
+```JavaScript
+let list = [1, 2, 3]
+
+console.log(list.includes(2))
+// ture
+```
+
+## Performance problem
+Admittedly, these APIs can improve code readability drastically, it still may have some performance decrease because of implementation for compatibility.
+
+> **setTimeOut** and **setInterval** can only calculate milliseconds level precision, so this experiment will use **console.time()** and **console.timeEnd()** to calculate the performance. (This statement is to avoid some strange question about this)
+
+```JavaScript
+
+```
