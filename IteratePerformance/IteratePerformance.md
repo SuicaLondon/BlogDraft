@@ -54,16 +54,40 @@ console.log(list2)
 ```
 
 ### filter
-This is also a useful method to extract useful data from the array. Imagine you have a huge list of data from the server and you only need a part of them. The filter will return a list that its index relevant callback returns true
+This is also a useful method to extract useful data from the array. Imagine you have a huge list of data from the server and you only need a part of them. The filter will return a new list that its index relevant callback returns true
 
 ```JavaScript
 let list = [1, 2, 3, 4, 5]
 let list2 = list.filter((item) => {
-  return item % 2 === 0;
+  return item % 2 === 0
 })
 
 console.log(list)
 console.log(list2)
 // [ 1, 2, 3, 4, 5 ]
 // [ 2, 4 ]
+```
+
+### reduce and reduceRight
+Both methods run the callback function on the array to produce a single value. Its concept affects the design of various libraries. The difference between reducing and reduceRight is the order of processing.
+
+```JavaScript
+let list = [1, 2, 3, 4, 5]
+let sum = list.reduce((total, value) => {
+  return total + value
+})
+
+console.log(sum)
+// 15
+```
+
+The second parameter is the initial value of this procedure. 
+```JavaScript
+let list = [1, 2, 3, 4, 5]
+let sum = list.reduce((total, value) => {
+  return total + value
+}, 5)
+
+console.log(sum)
+// 20
 ```
