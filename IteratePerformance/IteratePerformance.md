@@ -8,7 +8,7 @@ JavaScript offers tons of methods to control, but querying methods were not prov
 
 ## ES5 APIs
 
-ES5 provide a lot of array APIs, but only that of iteration will be described. All APIs can be called directly via any array object.
+ES5 provide a lot of array APIs, but only that of iteration will be described. All APIs can be called directly via any array object. The parameters normally include item value, index and array itself.
 
 ### forEach
 
@@ -91,3 +91,18 @@ let sum = list.reduce((total, value) => {
 console.log(sum)
 // 20
 ```
+
+### every and some
+Both method check if all items of array pass the logic of statement in callback. The difference between them is literally if every element satifiy the statement.
+```JavaScript
+let list = [1, 2, 3]
+let hasEven = list.some((item) => {
+  return item % 2 === 0;
+})
+
+console.log(hasEven)
+// true
+```
+
+### indexOf and lastIndexOf
+Literally.

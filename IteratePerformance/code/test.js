@@ -1,6 +1,6 @@
-let list = [1, 2, 3, 4, 5]
-let sum = list.reduce((total, value) => {
-  return total + value
-}, 5)
+let list = [1, 2, 3]
+let hasEven = list.some((item) => {
+  return item % 2 === 0;
+})
 
-console.log(sum)
+console.log(hasEven)
