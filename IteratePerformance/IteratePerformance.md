@@ -105,4 +105,44 @@ console.log(hasEven)
 ```
 
 ### indexOf and lastIndexOf
-Literally.
+Input the item value and return the index.
+```JavaScript
+let list = [1, 2, 3]
+let index = list.indexOf(2)
+
+console.log(index)
+// 1
+```
+
+## ES6
+ES6 provides some methods to handle pain points of array traversing.
+### find and findIndex
+Literally, return the item or index that fulfil the statement in the callback function.
+```JavaScript
+let list = [1, 2, 3]
+let item = list.find((item) => {
+  return item === 2;
+})
+
+console.log(item)
+// 2
+```
+
+### from
+Parameter is the object with a length property or iterator. It will return a array.
+
+```JavaScript
+Array.from("ABCDEFG")   
+// [A,B,C,D,E,F,G]
+```
+
+### keys
+Get the keys of array, returns a iteratable object
+```JavaScript
+let list = [1, 2, 3]
+
+console.log(list.keys())
+// Object [Array Iterator] {}
+console.log(list.keys().next())
+// { value: 0, done: false }
+```
