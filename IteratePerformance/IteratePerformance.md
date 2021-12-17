@@ -40,3 +40,30 @@ console.log(text)
 
 ### map
 This is the main character of this article. With the popularity of React.js, this method is widely used to render components. It will return a new array including all items which was returned by the callback function.
+
+```JavaScript
+let list = [1, 2, 3, 4, 5]
+let list2 = list.map((item) => {
+  return item * 2;
+})
+
+console.log(list)
+console.log(list2)
+// [ 1, 2, 3, 4, 5 ]
+// [ 2, 4, 6, 8, 10 ]
+```
+
+### filter
+This is also a useful method to extract useful data from the array. Imagine you have a huge list of data from the server and you only need a part of them. The filter will return a list that its index relevant callback returns true
+
+```JavaScript
+let list = [1, 2, 3, 4, 5]
+let list2 = list.filter((item) => {
+  return item % 2 === 0;
+})
+
+console.log(list)
+console.log(list2)
+// [ 1, 2, 3, 4, 5 ]
+// [ 2, 4 ]
+```
