@@ -286,3 +286,9 @@ function fakeMapTest(list) {
 
 It seems to have some other code is occupying the time of iteration. According to the [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) again. ECMA-262, 5h edition assuming that it may not be present in all implementations of the standard. To make sure the code can run in more devices, the forEach includes many checks. 
 
+> "If you want the best performance, please write the mechanical language instead of JavaScript"
+
+Morden Frontend project seems to not have so high-performance requirements. The readability is higher than everything, except the performance diff is more than 10 times. For frontend projects, you should avoid using for-in. Use forEach and map to increase the semantization. For backend Node.js projects or some performance-sensitive components, the basic for-loop seems to be a better choice.
+
+~~This article is not written for development but written for leetcode.~~
+
