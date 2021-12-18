@@ -162,6 +162,127 @@ Admittedly, these APIs can improve code readability drastically, it still may ha
 
 > **setTimeOut** and **setInterval** can only calculate milliseconds level precision, so this experiment will use **console.time()** and **console.timeEnd()** to calculate the performance. (This statement is to avoid some strange question about this)
 
+First, create a long list and performance testing function. The parameter includes *label* and *list* to create a unique time id and a new list for testing.
 ```JavaScript
+// all way to traverse should iterate 1000000 times
+const initialList = Array.from(Array(1000000).keys())
 
+function performanceTest(label, list, callback) {
+  let newList = [...list]
+  console.time(label)
+  callback(newList)
+  console.timeEnd(label)
+}
 ```
+
+Then, all test functions can call performanceTest function to record the processing time.
+```JavaScript
+function forTest(list) {
+  performanceTest("for", list, (list) => {
+    let sum = 0
+    for (let i = 0; i < list.length; i++) {
+      sum += list[i]
+    }
+  })
+}
+function forInTest(list) {
+  performanceTest("for-in", list, (list) => {
+    let sum = 0
+    for (let index in list) {
+      sum += list[index]
+    }
+  })
+}
+function forOfTest(list) {
+  performanceTest("for-of", list, (list) => {
+    let sum = 0
+    for (let item of list) {
+      sum += item
+    }
+  })
+}
+
+function forEachTest(list) {
+  performanceTest("forEach", list, (list) => {
+    let sum = 0
+    list.forEach((item) => {
+      sum += item
+    })
+  })
+}
+
+function mapTest(list) {
+  performanceTest("map", list, (list) => {
+    let sum = 0
+    list.map((item) => {
+      sum += item
+    })
+  })
+}
+```
+
+| Name    | First   | Second  | Third   | Chrome  |
+| ------- | ------- | ------- | ------- | ------- |
+| for     | 4.748   | 4.699   | 4.593   | 3.606   |
+| for-in  | 154.398 | 151.407 | 147.049 | 197.236 |
+| for-of  | 41.305  | 40.825  | 41.908  | 14.466  |
+| forEach | 17.387  | 17.048  | 17.028  | 16.620  |
+| map     | 24.533  | 24.314  | 24.116  | 22.649  |
+
+It is very awkward that forEach and map are much slower than traditional for-loop. The advanced for-loop even spend dozens of time. 
+
+According to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in), for-of and for-in will try to access the enumerable elements in prototype
+> A for...in loop only iterates over enumerable, non-Symbol properties
+
+> If you only want to consider properties attached to the object itself, and not its prototypes, use getOwnPropertyNames() or perform a hasOwnProperty() check (propertyIsEnumerable() can also be used). 
+
+Also, for-in and for-of call iterators, using ```let i = 0``` is absolute faster than creating a generator, while ```i++``` and ```i < length``` are quicker than calling ```.next()```.
+
+In addition, various platform has various implementations. Although both Node.js and Chrome are using V8, the time are very distinch. This article will keep focus on Node.js environment because it is more performance sensitive than browsers.
+
+It is believed there are reasons why advanced for-loop has such a low performance. However, why are functional iteration so slow?
+
+Let try to implement a fake forEach and map methods
+```JavaScript
+Array.prototype.fakeForEach = function(callback) {
+  for (let i = 0; i < this.length; i++) {
+    callback(this[i], i, this)
+  }
+}
+
+Array.prototype.fakeMap = function(callback) {
+  // modify is faster than add a new item 
+  let newList = new Array(this.length)
+  for (let i = 0; i < this.length; i++) {
+    newList[i] = callback(this[i], i, this)
+  }
+  return newList
+}
+
+function fakeForEachTest(list) {
+  performanceTest("fake-forEach", list, (list) => {
+    let sum = 0
+    list.fakeForEach((item) => {
+      sum += item
+    })
+  })
+}
+
+function fakeMapTest(list) {
+  performanceTest("fake-map", list, (list) => {
+    let sum = 0
+    list.fakeMap((item) => {
+      sum += item
+    })
+  })
+}
+```
+| Name         | First  |
+| ------------ | ------ |
+| forEach      | 17.967 |
+| map          | 25.688 |
+| fake forEach | 10.515 |
+| fake map     | 15.933 |
+
+It seems to have some other code is occupying the time of iteration. According to the [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) again. ECMA-262, 5h edition assuming that it may not be present in all implementations of the standard. To make sure the code can run in more devices, the forEach includes many checks. 
+

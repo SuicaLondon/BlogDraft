@@ -51,8 +51,41 @@ function mapTest(list) {
   })
 }
 
+Array.prototype.fakeForEach = function(callback) {
+  for (let i = 0; i < this.length; i++) {
+    callback(this[i], i, this)
+  }
+}
+
+Array.prototype.fakeMap = function(callback) {
+  let newList = new Array(this.length)
+  for (let i = 0; i < this.length; i++) {
+    newList[i] = callback(this[i], i, this)
+  }
+  return newList
+}
+
+function fakeForEachTest(list) {
+  performanceTest("fake-forEach", list, (list) => {
+    let sum = 0
+    list.fakeForEach((item) => {
+      sum += item
+    })
+  })
+}
+
+function fakeMapTest(list) {
+  performanceTest("fake-map", list, (list) => {
+    let sum = 0
+    list.fakeMap((item) => {
+      sum += item
+    })
+  })
+}
 forTest(initialList)
 forInTest(initialList)
 forOfTest(initialList)
 forEachTest(initialList)
 mapTest(initialList)
+fakeForEachTest(initialList)
+fakeMapTest(initialList)
