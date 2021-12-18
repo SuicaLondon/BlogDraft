@@ -10,7 +10,7 @@ JavaScript offers tons of methods to control, but querying methods were not prov
 
 ES5 provide a lot of array APIs, but only that of iteration will be described. All APIs can be called directly via any array object. The parameters normally include item value, index and array itself.
 
-### forEach
+### **forEach**
 
 forEach is a helpful method to traverse your data to increase readability. You don't need to write the annoying for statement for only iterating purposes. It will run the callback function every time when it iterates the list.
 
@@ -38,7 +38,7 @@ console.log(text)
 // almost equal list.join(',') :)
 ```
 
-### map
+### **map**
 This is the main character of this article. With the popularity of React.js, this method is widely used to render components. It will return a new array including all items which was returned by the callback function.
 
 ```JavaScript
@@ -53,7 +53,7 @@ console.log(list2)
 // [ 2, 4, 6, 8, 10 ]
 ```
 
-### filter
+### **filter**
 This is also a useful method to extract useful data from the array. Imagine you have a huge list of data from the server and you only need a part of them. The filter will return a new list that its index relevant callback returns true
 
 ```JavaScript
@@ -68,7 +68,7 @@ console.log(list2)
 // [ 2, 4 ]
 ```
 
-### reduce and reduceRight
+### **reduce** and **reduceRight**
 Both methods run the callback function on the array to produce a single value. Its concept affects the design of various libraries. The difference between reducing and reduceRight is the order of processing.
 
 ```JavaScript
@@ -92,7 +92,7 @@ console.log(sum)
 // 20
 ```
 
-### every and some
+### **every** and **some**
 Both method check if all items of array pass the logic of statement in callback. The difference between them is literally if every element satifiy the statement.
 ```JavaScript
 let list = [1, 2, 3]
@@ -104,7 +104,7 @@ console.log(hasEven)
 // true
 ```
 
-### indexOf and lastIndexOf
+### **indexOf** and **lastIndexOf**
 Input the item value and return the index.
 ```JavaScript
 let list = [1, 2, 3]
@@ -116,7 +116,7 @@ console.log(index)
 
 ## ES6
 ES6 provides some methods to handle pain points of array traversing.
-### find and findIndex
+### **find** and **findIndex**
 Literally, return the item or index that fulfil the statement in the callback function.
 ```JavaScript
 let list = [1, 2, 3]
@@ -128,7 +128,7 @@ console.log(item)
 // 2
 ```
 
-### from
+### **from**
 Parameter is the object with a length property or iterator. It will return a array.
 
 ```JavaScript
@@ -136,7 +136,7 @@ Array.from("ABCDEFG")
 // [A,B,C,D,E,F,G]
 ```
 
-### keys
+### **keys**
 Get the keys of array, returns a iteratable object
 ```JavaScript
 let list = [1, 2, 3]
@@ -149,7 +149,7 @@ console.log(list.keys().next())
 
 ## ES2016 and later
 ECMAScript is still trying to introduce more APIs to facilitate the development and solve existing problems.
-### includes
+### **includes**
 ```JavaScript
 let list = [1, 2, 3]
 
@@ -229,7 +229,7 @@ function mapTest(list) {
 | forEach | 17.387  | 17.048  | 17.028  | 16.620  |
 | map     | 24.533  | 24.314  | 24.116  | 22.649  |
 
-It is very awkward that forEach and map are much slower than traditional for-loop. The advanced for-loop even spend dozens of time. 
+It is very awkward that **forEach** and **map** are much slower than traditional for-loop. The advanced for-loop even spend dozens of time. 
 
 According to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in), for-of and for-in will try to access the enumerable elements in prototype
 > A for...in loop only iterates over enumerable, non-Symbol properties
@@ -242,7 +242,7 @@ In addition, various platform has various implementations. Although both Node.js
 
 It is believed there are reasons why advanced for-loop has such a low performance. However, why are functional iteration so slow?
 
-Let try to implement a fake forEach and map methods
+Let try to implement a fake **forEach** and **map** methods
 ```JavaScript
 Array.prototype.fakeForEach = function(callback) {
   for (let i = 0; i < this.length; i++) {
@@ -288,7 +288,7 @@ It seems to have some other code is occupying the time of iteration. According t
 
 > "If you want the best performance, please write the mechanical language instead of JavaScript"
 
-Morden Frontend project seems to not have so high-performance requirements. The readability is higher than everything, except the performance diff is more than 10 times. For frontend projects, you should avoid using for-in. Use forEach and map to increase the semantization. For backend Node.js projects or some performance-sensitive components, the basic for-loop seems to be a better choice.
+Morden Frontend project seems to not have so high-performance requirements. The readability is higher than everything, except the performance diff is more than 10 times. For frontend projects, you should avoid using for-in. Use **forEach** and **map** to increase the semantization. For backend Node.js projects or some performance-sensitive components, the basic for-loop seems to be a better choice.
 
 ~~This article is not written for development but written for leetcode.~~
 
