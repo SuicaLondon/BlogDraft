@@ -2,4 +2,4 @@
 This github library just for the draft of blog which will be built in the unknown future. It will be updated inregularly. 
 
 ## Content
-1. [The performance issues when iterating with various methods](./IteratePerformance/IteratePerformance.md)
+1. [The performance issues when iterating with various methods](IteratePerformance/IteratePerformance.md)
