@@ -67,3 +67,59 @@ The solution above was still written by JavaScript or limited by no direct solut
 Intersection Observer API is one of the solutions to solve the problem. The difficulty of implementing this function is solving the loop calling and the thread scheduling. Imagine when you are developing an infinite scrolling page, every detection, UI rendering and every other intersection run on the main thread. Intel and Qualcomm can contribute more to help JavaScript to warm the Earth.
 
 The Intersection Observer API can register a callback function that will be executed when elements are entering, displaying or intersecting. There are no code that will run on the main thread.
+
+
+> Intersection Observer can not reflect the exact number of pixels that overlap.
+
+With the definition of document, the callback will be triggered when:
+   
+1. A target element intersects either the device's viewport or a specified element. That specified element is called the root element or root for the purposes of the Intersection Observer API.
+2. The first time the observer is initially to watch a target element.
+
+It is a bit obscure, so we start from the usage.
+
+```JavaScript
+const blogs = document.querySelectorAll('.blog')
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    // do something to change the UI
+  })
+}, {
+  threshold: 0.3,
+  rootMargin: "-20px"
+})
+
+blogs.forEach(blog => {
+  observer.observe(blog)
+})
+```
+The usage is very clear, only two step:
+1. Create an instance object of IntersectionObserver with two parameters
+2. Use this instance to bind DOM an element one by one
+
+With the document of [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), IntersectionObserver receive two parameters:
+
+   1. Callback function which will be run when a threshold is reached.
+   2. Optional options object to configure the root element, threshold and the margin of the root element.
+
+> **root** must be the ancestor of the target element
+> 
+> **threshold** can be an array likes ```[0, 0.25, 0.5, 0.75, 1]``` to specify the executed times.
+
+The callback will be fired when the minimal rectangle of one of the elements is displayed or disappear. When callback is executed, it will return entries that include the entry objects relative to the observed elements.
+
+```JavaScript
+// Each entry describes an intersection change for one observed
+// target element:
+  //   entry.boundingClientRect
+  //   entry.intersectionRatio
+  //   entry.intersectionRect
+  //   entry.isIntersecting
+  //   entry.rootBounds
+  //   entry.target
+  //   entry.time
+```
+
+Normally, when the *isIntersecting* variable will be checked to find elements that are currently visible with the root.
+
+> This callback is running on the main thread, so the operation should be quickly. The time-consuming function should use **window.requestIdleCallback()**
