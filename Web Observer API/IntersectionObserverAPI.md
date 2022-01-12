@@ -106,6 +106,7 @@ With the document of [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Inte
 > 
 > **threshold** can be an array likes ```[0, 0.25, 0.5, 0.75, 1]``` to specify the executed times.
 
+### Callback
 The callback will be fired when the minimal rectangle of one of the elements is displayed or disappear. When callback is executed, it will return entries that include the entry objects relative to the observed elements.
 
 ```JavaScript
@@ -120,6 +121,9 @@ The callback will be fired when the minimal rectangle of one of the elements is 
   //   entry.time
 ```
 
-Normally, when the *isIntersecting* variable will be checked to find elements that are currently visible with the root.
+Normally, the *isIntersecting* variable need to be checked to find elements that are currently visible with the root.
 
 > This callback is running on the main thread, so the operation should be quickly. The time-consuming function should use **window.requestIdleCallback()**
+
+
+### Options
