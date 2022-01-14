@@ -3,7 +3,7 @@
 ## Historical solution of lazy loading
 In history, existed a number of implementations of lazy loading, visibility detection and identifying the relationship between two elements. Different events played important roles. It always came with the performance burden so that developers invent various methods to fix the performance impact, such as throttle and debounce.
 
-> iOS UIWebViews only triggle the scrol event when the scrolling has completed [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event)
+> iOS UIWebViews only invoke the scrol event when the scrolling has completed [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event)
 
 ```JavaScript
 // simple logic of the scroll event handler for bottom loading
@@ -107,7 +107,7 @@ With the document of [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Inte
 > **threshold** can be an array likes ```[0, 0.25, 0.5, 0.75, 1]``` to specify the executed times.
 
 ### Callback
-The callback will be fired when the minimal rectangle of one of the elements is displayed or disappear. When callback is executed, it will return entries that include the entry objects relative to the observed elements.
+The callback will be fired when the minimal rectangle of one of the elements is displayed or disappear. When callback is executed, it will return **IntersectionObserverEntry** array that include the entry objects relative to the observed elements.
 
 ```JavaScript
 // Each entry describes an intersection change for one observed
@@ -123,7 +123,49 @@ The callback will be fired when the minimal rectangle of one of the elements is 
 
 Normally, the *isIntersecting* variable need to be checked to find elements that are currently visible with the root.
 
-> This callback is running on the main thread, so the operation should be quickly. The time-consuming function should use **window.requestIdleCallback()**
+> This callback is running on the main thread, so the operation should be quickly. The time-consuming function should use *window.requestIdleCallback()*
+
+- boundingClientRect: return the bounds rectangle of the target element as a object of **DOMRectReadOnly**. It is calculated by *getBoundingClientRect()*
+- intersectionRatio: return the retio of the *intersectionRect* to the *boundingClinentRect*
+- intersectionRect: return a **DOMRectReadOnly** object relative to visible area of the target.
+- isIntersecting: return a boolean which is representing if the element reaches the threshold.
+- rootBounds： return a **DOMRectReadOnly** representing the root of observer.
+- target: return the observerd element.
+- time: return a **DOMHighResTimeStamp** record the change of intersection.
 
 
 ### Options
+
+#### thresholds
+
+This option receives a numeric value of an array of numbers. When the intersection of the target reaches this threshold, the observer will fire the callback. You can set a numeric array to execute the callback multiple times. 0.5 equal to 50% of the target's width/height is the thresholds.
+
+#### root
+This option receives a DOM element which is supposed to be the parental or ancestral element of the target. Its default value is browser viewport.
+
+> In some browsers, the parameter cannot be a **Document**.
+
+#### rootMargin
+This option is the margin between the root element and the observed actual viewport.  value is similar to the CSS margin. The number of pixels should follow the top-right-bottom-left rule. Also, the value can be percentages. Defaults to all zero.
+
+### Example
+
+Let's use this API to create a simple lazy loading list. 
+
+```JavaScript
+// Posit the all items of the list have clas name item, the list has the class named list
+const list = document.querySelectorAll('.item')
+const listObserver = new IntersectionObserver(entries => {
+  const lastItem = entries[0]
+  if(!lastItem.isIntersection) return
+  // Call loading API and render new items
+  loadNextPage()
+  // The last item has been changed
+  listObserver.unobserve(lastItem.target)
+  listObserver.observe(document.querySelectorAll('.list:last-child'))
+})
+
+listObserver.observe(document.querySelectorAll('.list:last-child'))
+```
+
+It was pretty handy, you can now update your website. Let's to more measures to eliminate IE.
