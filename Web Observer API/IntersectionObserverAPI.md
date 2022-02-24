@@ -1,5 +1,7 @@
 # Intersection Observer API
 
+Lazy loading is a useful technique that can delay loading non-essential content in an application until it is needed. It can reduce the bundle size and increase the loading performance. However, there are many implications and solutions of that in history. 
+
 ## Historical solution of lazy loading
 In history, existed a number of implementations of lazy loading, visibility detection and identifying the relationship between two elements. Different events played important roles. It always came with the performance burden so that developers invent various methods to fix the performance impact, such as throttle and debounce.
 
