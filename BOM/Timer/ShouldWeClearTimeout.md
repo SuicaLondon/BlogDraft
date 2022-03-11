@@ -1,6 +1,6 @@
 # Should we clearTimeout before we release the timer?
 
-In a previous interview, a debug question causes me to deep consideration. What is the `GC` strategy of JavaScript when we are using **setTimeout** and **setInterval**? What happen if we did not clear the timer before releasing the timer of **setTimeout**?
+In a previous interview, a debug question causes me to deep consideration. What is the ***GC*** strategy of JavaScript when we are using **setTimeout** and **setInterval**? What happen if we did not clear the timer before releasing the timer of **setTimeout**?
 
 ## What is timer?
 The timer is an abbreviation of a set of browser APIs which allow developers to register a callback run once or multiple after one or every certain time. Two timer are widely supported, **setTimeout** and **setInterval**.
@@ -90,7 +90,7 @@ function App() {
 
 This snippet is to create thousands of timers to take up the memory. When all is completed, the state of loaded will be changed to rerender the page to use memory. The memory usage was drawn below.
 
-In a previous interview, a debug question causes me to deep consideration. What is the `GC` strategy of JavaScript when we are using **setTimeout** and **setInterval**? What happen if we did not clear the timer before releasing the timer of **setTimeout**?
+In a previous interview, a debug question causes me to deep consideration. What is the ***GC*** strategy of JavaScript when we are using **setTimeout** and **setInterval**? What happen if we did not clear the timer before releasing the timer of **setTimeout**?
 
 ## What is timer?
 The timer is an abbreviation of a set of browser APIs which allow developers to register a callback run once or multiple after one or every certain time. Two timer are widely supported, **setTimeout** and **setInterval**.
@@ -181,14 +181,12 @@ function App() {
 This snippet is to create thousands of timers to take up the memory. When all is completed, the state of loaded will be changed to rerender the page to use memory. The memory usage was drawn below.
 
 
-[<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Timer/memory.jpeg?raw=true" width="100%"/>](Memory occupation)
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Timer/memory.jpeg?raw=true" width="100%"/>
 
 
-Ok, at least at Chrome, you don't have to release the timer when using **setTimeout**. The `GC` is smart enough to clear the out of date timers. Firefox has the same result and Safari's kit does not display the memory change when loaded changed. Maybe the next blog will research this problem (
-
-> It does not mean you can do that when using **setInterval**.
-
-Ok, at least at Chrome, you don't have to release the timer when using **setTimeout**. The `GC` is smart enough to clear the out of date timers. Firefox has the same result and Safari's kit does not display the memory change when loaded changed. Maybe the next blog will research this problem (
+Ok, at least at Chrome, you don't have to release the timer when using **setTimeout**. The ***GC*** is smart enough to clear the out of date timers. Firefox has the same result and Safari's kit does not display the memory change when loaded changed. Maybe the next blog will research this problem (
 
 > It does not mean you can do that when using **setInterval**.
+Ok, at least at Chrome, you don't have to release the timer when using **setTimeout**. The ***GC*** is smart enough to clear the out of date timers. Firefox has the same result and Safari's kit does not display the memory change when loaded changed. Maybe the next blog will research this problem (
 
+> It does not mean you can do that when using **setInterval**.
