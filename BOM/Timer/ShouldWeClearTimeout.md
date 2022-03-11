@@ -24,7 +24,7 @@ const timer = setInterval(() => {
 }, 1000)
 ```
 
-When the timer is cleared, it is always following a statement to release the variable of timer id to hint [**Carbage Collection(CG)**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management) to release the memory.
+When the timer is cleared, it is always following a statement to release the variable of timer id to hint [**Garbage Collection(GC)**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management) to release the memory.
 
 ## How about setTimeout?
 According to [MDN](https://developer.mozilla.org/en-US/docs/Web/API/setTimeout) and [w3schools](https://www.w3schools.com/jsref/met_win_settimeout.asp), it is not forcing developer to call clearTimeout after the callback was fired. 
@@ -45,7 +45,7 @@ for(let i = 0; i < 10000; i++) {
 // same
 ```
 
-The console shows that the ID is bigger than zero and always increasing. It still cannot prove anything of CG and clearTimeout. It is time to scroll [w3.org](w3.org).
+The console shows that the ID is bigger than zero and always increasing. It still cannot prove anything of GC and clearTimeout. It is time to scroll [w3.org](w3.org).
 
 > One interesting thing is that **setTimeout** and **setInterval** are sharing their ID, so you can use clearTimeout to clear interval ID.
 
