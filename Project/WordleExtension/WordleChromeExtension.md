@@ -11,11 +11,11 @@ The design of this project is simple, users input the words they have inputed in
 
 <img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/wordle-plugin-gameplay.png?raw=true" width="100%"/>
 
-// Algorithm
+The core idea is filtering the words from the Wordle website. (The word collection can be found in the source code) The image below is the thought of the algorithm which saves the words into various colour arrays. They will be used to reduce the possible result. For example, the maximum length of greens is 5 because it matches the answer one by one, so if the greens list has **n** on index 2, all the words that don't include **n** on index 2 can be removed.
 
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/wordle-plugin-algorithm.png?raw=true" width="100%"/>
 
-// Problem
-It is so cumber for the users and they absolutely don't want to use the website. For that reason, I developed this extension to force them to install. Once install forever destroy.
+There are a lot of problems with this design, users need to click **Next** to update the result. Also, it is so cumbering for the users to input one by one. Although I have some ideas to refine the website, it is still meanless because my friend will never use it.
 
 ## The biggest problem of the extension
 However, the only and the biggest problem is that I need to pay **5 dollars** for the developer fee of Google Web Store. I am currently in the condition of homeless. That reason daunts me to submit further.
