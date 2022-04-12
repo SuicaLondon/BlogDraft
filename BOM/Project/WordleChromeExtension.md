@@ -1,0 +1,1 @@
+# The conclusion of wordle extension development
