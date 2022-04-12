@@ -9,9 +9,10 @@ When the game was still fun, the word was sometimes hard so he needed to seek fr
 
 The design of this project is simple, users input the words they have inputed into the wordle website. Then, click the letter to change the color to fix its result on wordle website.
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/wordle-plugin-gamplay.png?raw=true" width="100%"/>
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/wordle-plugin-gameplay.png?raw=true" width="100%"/>
 
 // Algorithm
+
 
 // Problem
 It is so cumber for the users and they absolutely don't want to use the website. For that reason, I developed this extension to force them to install. Once install forever destroy.
