@@ -142,4 +142,4 @@ One of the reasons why I don't want to open Xcode is to extend my developer lice
 ## Conclusion
 Although the evil plan of the penguin was stopped, the development process is really funny. Thanks, Josh Wardle develop so an interesting game for us. The extension will not be submitted to the extension store until I found a property to live in. ~~And escape from the WWDC project~~
 
-Everyone can download the extension and use it. ~~I will add some tutorial to the README.md later this fall.~~
+Everyone can download the [extension](https://github.com/SuicaDavid/WordlePluginChrome) and use it. ~~I will add some tutorial to the README.md later this fall.~~
