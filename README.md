@@ -5,3 +5,4 @@ This github library just for the draft of blog which will be built in the unknow
 1. [The performance issues when iterating with various methods](IteratePerformance/IteratePerformance.md)
 2. [Intersection Observer API](/BOM/WebObserverAPI/IntersectionObserverAPI.md)
 3. [Should we clearTimeout?](/BOM/Timer/ShouldWeClearTimeout.md)
+4. [The unmatched penguin met the biggest challenge when developing Wordle Chrome Extension.](/Project/WordleExtension/WordleChromeExtension.md)
