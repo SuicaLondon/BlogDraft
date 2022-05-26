@@ -83,8 +83,8 @@ However this feature is useless in modern JS. You can now use `${}` to replace t
 ```JavaScript
 const race = 'Penguin'
 const birthday = 11
-console.log(`Suica is a ${race} whom birthday is in ${birthday}`)
-// Suica is a Penguin whom birthday is in 11
+console.log(`Suica is a ${race} whose birthday is in ${birthday}`)
+// Suica is a Penguin whose birthday is in 11
 ```
 
 ## Visualisation
@@ -94,13 +94,25 @@ When you want to print out a DOM object, use console.dir to print the DOM object
 Use console.table to print the object array
 
 ### Use various level of log to make your console cleaner
+When the project is growing, it also comes with more verbose logs. If you think it has so many logs distract you. It has some methods to differentiate the logs.
 
-If you think it has so many logs distract you. It has some method to differentiate the logs.
+1. console.info
+2. console.debug
+3. console.warn
+4. console.error
 
-console.info
-console.error
-console.warn
-console.debug
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Console/logs.jpeg?raw=true" width="100%"/>
+
+console.log, console.info and console.debug are almost the same in most browsers. The difference is that they can be classified to different levels on the developer tools. Furthermore, console.debug is hidden in the default level.
+
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Console/logsLevel.jpeg?raw=true" width="100%"/>
+
+> console.info will has a info icon before result in Firefox
+
+console.warn and console.error has obvious result in all browsers.
+
+It is recommended to use console.debug in the command module debug because it can be hidden as default. Use console.info for the important log. Warning and error can be used as analysis and error handling. Then you can use console.log to pollute the project. (x
+
 
 ### Group your logs
 console.group
