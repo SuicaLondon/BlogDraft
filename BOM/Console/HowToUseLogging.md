@@ -182,18 +182,62 @@ console.countReset('text')
 
 The console.trace() is very useful to trace the calling chain. For example, you have a request method that many similar methods are calling it. If you want to know which one is the trouble maker of your code, this is your best helper.
 
+```JavaScript
+function wrapper() {
+    function content() {
+        console.log('BUG')
+        request()
+    }
+    content()
+}
+
+function request() {
+    console.trace()
+}
+
+wrapper()
+// BUG
+// console.trace
+//      request 
+//      content 
+//      wrapper 
+//      (anonymous) 
+```
 
 ## Performance log
 console.time
 console.timeLog
 console.timeEnd
 
+When you are using setTimeout and setInterval to test the performance. You may find that it is really hard to test it in some very quick statements. For example, if you want to test the performance between for-lop and other array iterator APIs, you need a big array to reach 1 millisecond. Now you can use the time to log everything. It can receive a label as the name/ID of the log group.
+
+```JavaScript
+console.time('For-loop')
+for (let i = 0; i < 5; i++) {
+    console.timeLog('For-loop', i)
+}
+console.timeEnd('For-loop')
+// For-loop: 0.004150390625 ms 0
+// For-loop: 0.0830078125 ms 1
+// For-loop: 0.114013671875 ms 2
+// For-loop: 0.14501953125 ms 3
+// For-loop: 0.169921875 ms 4
+```
+
+
 console.profile
 console.timeStamp
 console.profileEnd
-> Compatibility is terriable.
+It is an advanced timestamp record, but its compatibility is terrible now. Just use it in the DEV environment. This blog may discuss it later(
 
 
 ## Styling
+If you think the default warn and error is not enough to help you build colourful logs. You can use %c to style your logs with CSS code.
+In the code below, %c can be replaced with CSS code, the code after the directive will be affected.
 
-%c can be replaced with css code
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Console/style.png?raw=true" width="100%"/>
+
+Not all CSS code are supported in browsers, please just use the basic colour and background-color.
+
+## Conclusion
+With the development of the browser, the developer tool can be a helpful partner for developers. Most of the features FE developers never use. I hope this blog can help some people who struggle with finding useful log in thousands of logs.
