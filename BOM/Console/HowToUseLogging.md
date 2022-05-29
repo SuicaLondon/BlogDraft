@@ -91,7 +91,12 @@ console.log(`Suica is a ${race} whose birthday is in ${birthday}`)
 
 When you want to print out a DOM object, use console.dir to print the DOM object directly
 
-Use console.table to print the object array
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Console/dir.png?raw=true" width="100%"/>
+
+Use console.table to print the object array.
+
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Console/table.png?raw=true" width="100%"/>
+
 
 ### Use various level of log to make your console cleaner
 When the project is growing, it also comes with more verbose logs. If you think it has so many logs distract you. It has some methods to differentiate the logs.
@@ -115,19 +120,67 @@ It is recommended to use console.debug in the command module debug because it ca
 
 
 ### Group your logs
-console.group
-console.groupEnd
+1. console.group
+2. console.groupEnd
+3. console.groupCollapsed
+Sometimes, you need to collect the code inside a group, for instance, you need to process a group of data which may include a lot of logs. You need to group them up to increase the readability and improve the experiment when others are fixing this module.
+
+```JavaScript
+console.group('Suica diary')
+...
+console.log('~~~~~~~FELICA!!!!!!!!!!!')
+...
+console.groupEnd()
+// > Suica diary
+//      ~~~~~~~FELICA!!!!!!!!!!!
+```
+<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Console/group.png?raw=true" width="100%"/>
+
+The parameters of the group are the same as other log methods, but the first one will be emphasised as the label of this group. The difference between console.group and console.groupCollapsed is that console.groupCollapsed will auto close the collapsable log in the group.
+
+> Unlike console.time(), you cannot name the start method and close method the same name to group the logs. You must very careful to group the logs in the async code.
+
+
 
 ### Assert
-console.assert
+If you are familiar with jest or other unite test library, you must be easy to accept console.assert.
+
+```JavaScript 
+console.assert(true, 'Should be true')
+// 
+console.assert(false, 'Should be true')
+// Assertion failed: Should be true
+```
+
 When the first parameter is true, it will not print anything.
-If false, it will print second parameter with error alert.
+If false, it will print the second parameter with an error alert. It is a good way to stop writing an if statement when it only includes some console.log code.
+
+```JavaScript
+// replace
+if (state.error) {
+    console.error('It has an error')
+}
+// to 
+console.assert(!state.error, 'It has an error')
+```
 
 ### Other
-console.clear
-console.count
-console.countReset
-console.trace
+1. console.clear()
+2. console.count()
+3. console.countReset()
+4. console.trace()
+
+The clear method are not usual in daily development. It can clear all logs including your colleageus' logs. The following counting is much more common because it can replace the counting method with a for-loop and be more flexable. 
+
+```JavaScript
+console.count('text')
+// text 1
+console.count('text')
+// text 2
+console.countReset('text')
+```
+
+The console.trace() is very useful to trace the calling chain. For example, you have a request method that many similar methods are calling it. If you want to know which one is the trouble maker of your code, this is your best helper.
 
 
 ## Performance log
