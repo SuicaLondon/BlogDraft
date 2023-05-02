@@ -35,7 +35,7 @@ Fine, It still makes sense that I can write a **RegExp** to fix it.
 RegExp(r'(\d+)(?=_|\@|\.)')
 ```
 
-Then I run the script again, and run the App, then, I saw the some black magic from my colleagues.
+Then I run the script again and run the App, then, I saw some black magic from my colleagues.
 
 ```Dart
 SomeWidget(
@@ -51,11 +51,16 @@ So I still need to write some fuzzy search, so I decided to check if the code fi
 ## Publish
 Compare to the challenge above, it is not hard to publish my library to pub.dev. The only problem is that there is no document about the standard of the global library, I have tried three versions to run the script globally which only includes some file name changes.
 
-> Just register to pub.dev and run
+> Just register to pub.dev and run below at the first time
 ```
-dart pub publish --dry-run      
+dart pub publish --dry-run   
+```
+> You should remove --dry-run since the second time
+```
+dart pub publish
 ```
 
+Everything is done, I published my first package in Flutter. This command was used in our company's real project and put into the CI/CD. 
 
 
 
