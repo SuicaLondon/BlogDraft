@@ -1,5 +1,7 @@
 # Why Math.max() < Math.min() is true
 
+## Background
+
 As we all know, JavaScript is a beautiful, elegant, and well-designed language. Brendan Eich spent much of his life designing it. Thanks to that, we have such an intuitive language:
 
 ```JavaScript
@@ -16,6 +18,8 @@ NaN !== NaN // true
 We had a knowledge-sharing ~~slack-off~~ session today, and someone shared a question about the beauty of the language's syntax. It reminded me of my previous job in China. Almost all Chinese companies like using these elegant syntax and principles as interview questions. When I think about the most memorable question I prepared, it has to be this one:
 
 > What is the result of Math.max() < Math.min()? why?
+
+## Answer
 
 This question might seem nonsensical when compared to other questions like implementing `Promise`, developing a subscribe-observation function with specific requirements, or explaining the **Event-loop** principle. However, it can still demonstrate the skill of searching for and connecting information.
 
