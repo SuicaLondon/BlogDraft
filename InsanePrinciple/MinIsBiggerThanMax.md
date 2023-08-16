@@ -1,6 +1,6 @@
 # Why Math.max() < Math.min() is true
 
-As we all know, JavaScript is a beautiful, elegant, well design language. Brendan Eich spent many life designing it. Thank for that, we can have such an intuitive language:
+As we all know, JavaScript is a beautiful, elegant, and well-designed language. Brendan Eich spent much of his life designing it. Thanks to that, we have such an intuitive language:
 
 ```JavaScript
 NaN !== NaN // true
@@ -13,23 +13,24 @@ NaN !== NaN // true
 {} + [] // 0
 ```
 
-It had a knowledge-sharing ~~slack-off~~ session today, and somebody share some question about that beautiful language syntax. It brings me back to my previous job in China. Almost all Chinese companies like using these pretty syntax and principles as interview questions. When I seek for the most memoriable question I prepared, it should be this one.
+We had a knowledge-sharing ~~slack-off~~ session today, and someone shared a question about the beauty of the language's syntax. It reminded me of my previous job in China. Almost all Chinese companies like using these elegant syntax and principles as interview questions. When I think about the most memorable question I prepared, it has to be this one:
 
 > What is the result of Math.max() < Math.min()? why?
 
-This question seems nonsense, compared with other questions likes implementing **Promise**, developing a subscribe-observation function with specific requirements or the **Event-loop** principle. But it can still prove the skill of searching and connecting documents.
+This question might seem nonsensical when compared to other questions like implementing `Promise`, developing a subscribe-observation function with specific requirements, or explaining the **Event-loop** principle. However, it can still demonstrate the skill of searching for and connecting information.
 
-The inverviewee was able to seach **MDN** to get the result, let's follow the steps.
+The interviewee was able to search **MDN** to get the result. Let's follow the steps.
 
-That is the description of **Math.max** and **Math.min**
+Here's the description of [`Math.max`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max) and [`Math.min`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min):
 
-> The **Math.max()** static method returns the largest of the numbers given as input parameters, or -[Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) if there are no parameters.
+> The `Math.max()` static method returns the largest of the numbers given as input parameters, or -[Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) if there are no parameters.
 
-> The **Math.min()** static method returns the smallest of the numbers given as input parameters, or [Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) if there are no parameters.
+> The `Math.min()` static method returns the smallest of the numbers given as input parameters, or [Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) if there are no parameters.
 
-You may find something weird, if there is not parameter, the **Math.max()** returns negative [Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity) while the **Math**.min()** returns positive. That is the reason the equation returns true. Why does JavaScript designed like that? Is it also a beautiful design of JavaScript? 
+You might find something peculiar: if there are no parameters, `Math.max()` returns negative [Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity), while `Math.min()` returns positive [Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity). That's the reason the equation returns true. Why was JavaScript designed like that? Is it another example of JavaScript's beauty in design?
 
-Unfortunately, it is neither yes nor no, base on my favourite [ecma-international.org](https://262.ecma-international.org/5.1/#sec-15.2.4), it was defined on purpose
+Unfortunately, it's neither a simple yes nor no. Based on my favorite [ecma-international.org](https://262.ecma-international.org/5.1/#sec-15.2.4), this behavior was deliberately defined:
+
 
 * 15.8.2.11 max ( [ value1 [ , value2 [ , … ] ] ] )
 Given zero or more arguments, calls ToNumber on each of the arguments and returns the largest of the resulting values.
@@ -49,9 +50,9 @@ Given zero or more arguments, calls ToNumber on each of the arguments and return
   
   The length property of the min method is 2.
 
-If you have some experience with some simple algorithm, or any experience with Leetcode, you may realize why they have to implement like that.
+If you have experience with simple algorithms or any experience with **Leetcode**, you might realize why they implemented it this way.
 
-This is my guessed implementation of *max()*.
+Here's my guessed implementation of `max()`:
 
 ```JavaScript
 Math.max = (...args) => {
@@ -63,8 +64,8 @@ Math.max = (...args) => {
 }
 ```
 
-The initial max should be -Infinity, because this is the only number that is smaller than every number, some people may suggest that we can make the default max number the first index of the parameter, if there is no parameter, returns null or undefined. It is true, but as a foundation function, the design should be pure and consistent. Returns *null*/*undefined* can make it functional sense but it will make the return type not pure.
+The initial max should be -[Infinity](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity), as it's the only number smaller than every other number. Some people might suggest setting the default maximum number as the first index of the parameter array and returning null or undefined if there are no parameters. This approach is valid, but as a foundational function, the design should be pure and consistent. Returning null or undefined might make functional sense, but it would introduce impurity to the return type.
 
-Use the sudo-code to describe that the input is `number[]`, than it returns `number?`. Also, as a method of **Math**, it is not sematic that **Math.max()** returns null because null is not a number and it is also not the max number of nothing.
+Using pseudocode to describe that the input is `number[]` and the return type is `number?` maintains consistency. Moreover, as a method of `Math`, it's not semantically appropriate for `Math.max()` to return null, as null is not a number and it's not the maximum value of nothing.
 
-JavaScript has so many perfect, elegant, genius deisgn. but this design is sadly not smart enough.
+JavaScript boasts many perfect, elegant, and ingenious designs, but unfortunately, this particular design isn't quite as clever.
