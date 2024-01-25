@@ -4,8 +4,7 @@ Recently, I was tasked with implementing a new toast that remains fixed at the t
 
 ## Requirement
 
-<!-- <img src="https://github.com/SuicaDavid/BlogDraft/FlutterSnackBar" width="100%"/> -->
-![Requirement](requirement.jpeg)
+![Requirement](https://github.com/SuicaLondon/BlogDraft/blob/master/FlutterSnackBar/requirement.jpeg?raw=true)
 
 ```Dart
  ScaffoldMessenger.of(context).showSnackBar(
