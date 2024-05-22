@@ -33,6 +33,8 @@ The result is obvious: the request for an external stylesheet is always slower t
 
 > inline style > inline CSS > external stylesheet
 
+![Load CSS](https://github.com/SuicaLondon/BlogDraft/blob/master/DontUseInlinStyle/load-css.png?raw=true)
+
 However, why don't we use the inline style?
 
 ## The history of CSS styling
