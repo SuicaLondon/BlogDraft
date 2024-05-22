@@ -110,6 +110,7 @@ Pros:
 1. No style conflict at all
 2. Combine with JS, fixed into modules
 3. Easy to pass the JS variable into CSS
+4. Type safe
 
 Cons:
 
@@ -126,13 +127,15 @@ If you search for the most popular solution of CSS right now, Tailwind CSS would
 What problem does it solve?
 
 1. Ultimate reusable on CSS
-2. No style pollution
-3. Don't need to name in most case (Don't use @apply)
-4. Fast compile time
-5. Fast development
-6. Easy to copy component
-7. Easy to learn
-8. Easy to build your own design system, so it has a strong ecosystem
+2. Lowest bundle size, (Can take more advantage of using gzip)
+3. No style pollution
+4. Don't need to name in most case (Don't use @apply)
+5. Fast compile time
+6. Fast development
+7. Easy to copy component
+8. Easy to define theme
+9. Easy to learn
+10. Easy to build your own design system, so it has a strong ecosystem
 
 Tailwind is actually a game-changer on the Front End, it resolved many issues of other CSS solutions. It is scalable and easy to use, so is it perfect?
 
@@ -187,6 +190,57 @@ Many developers tend to not write CSS is that CSS is too hard and too complicate
 
 Why did I mention inline style priority now?
 
-The inline style was always blamed that it has the highest priority, and it is so hard to override it. Even we can use `!important` to make a style have the highest priority to override inline-style. What if I want to override the style with `!important`? How can I manage the style that all of them have `!important`?
+The inline style was always blamed that it has the highest priority, and it is so hard to override it. Even we can use `!important` to make a style have the highest priority to override inline style. What if I want to override the style with `!important`? How can I manage the style so that all of them have the same priority?
 
 That reveals another issue of the Tailwind, it does not solve the priority management issues radically. It highly relies on the ecosystem and your code habit to manage priority. It still has requirements on the code standard and the code review of the team.
+
+### What's next?
+
+Separation of concerns is one of the core concepts of Atomic CSS, HTML and CSS should follow the single responsible principle. Tailwind solved some of the issues of Atomic CSS and improved some DX.
+
+What next?
+
+Well, one of the front-end developers' favorites: throw the problem to the compiler.
+
+Facebook introduced the library called StyleX late last year. It uses the syntax of CSS in JS and includes the compiler that compiles the style into Atomic CSS.
+
+It implements the Deterministic Resolution and makes sure the last call is always the right one, and it also has a feature that the Tailwind doesn't have: Type safe.
+
+```typescript
+const styles = stylex.create({
+  base: {
+    fontSize: 14,
+    color: "rgb(0,0,0)",
+  },
+  highlighted: {
+    color: "red",
+  },
+});
+```
+
+Let's go back to the cons of the CSS in JS
+
+1. Runtime performance issue, especially after React 18
+2. Bundle size
+3. Ruin React DevTools, as they will wrap the component with another layer to inject the style into your component.
+
+All of these problems were what the Atomic CSS solved, StyleX also had the benefit of CSS in JS. I cannot complain more about that.
+
+Pros:
+
+- Just use it
+
+Cons:
+
+- Syntax
+- Performance on repaint and reflow (Tiny flaw, because it changes more classes in DOM)
+
+## Conclusion
+
+This article explores the history of CSS styling to determine the best method currently available. While StyleX is the leading approach today, it may not remain so indefinitely. As StyleX becomes more widely used, additional issues are likely to emerge. The future is uncertain, and no one can predict what will happen. With ongoing technological advancements, developers might soon discover ways to leverage inline styles to resolve existing challenges.
+
+> The Front End developer in 2014: Don't use cookie, use localStorage and header to save the token
+>
+> The Front End developer in 2024: Don't use localStorage and header to save tokens, use cookie
+
+But at least today, please, don't do it.
