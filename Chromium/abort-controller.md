@@ -67,6 +67,11 @@ void AbortSignal::RemovedEventListener(
 }
 ```
 
+Now, we have a conclusion that the cancellation could be separated into two cases:
+
+1. if the request is cancelled before it's sent, the request will be discarded immediately.
+2. if the request is cancelled after it's sent, the request will reach the server, but the response will be ignored.
+
 ## Conclusion
 
 I am not going to prove anything or judge anything **today**, I just want to find some challenges out of my boring daily work. Even if i am a super noob in C++, it is not hard to find the answer. Studying a new area is always a good thing that can help me to open my mind and my scope.
