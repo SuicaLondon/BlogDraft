@@ -1,8 +1,67 @@
-# MediaQuery, what you should know
+# Flutter Web MediaQuery, what you should know
 
 Responsive design is a nightmare for many frontend developers, particularly when developing applications without careful planning and design consideration. Poor responsive design choices can exponentially increase the complexity of debugging and testing processes.
 
 Flutter was developed to handle cross-platform solution in the first day. It effectively addresses the challenges of building applications for multiple platforms whilst maintaining a single codebase. If you are developing mobile app in a startup company or you are implementing some performance sensitive requirement, Flutter can provide much better experience than React Native. It is a very good idea to render the UI with its own way to tackle with the fragmentation problem of Android devices. I can continually bragging Flutter for saving my life in development, until I was asked to develop a Flutter Web application.
+
+In this article, I will describe some of my understanding on responsive design with `MediaQuery` in Flutter, focusing on practical approaches and common pitfalls to avoid.
+
+## Context~~(Complaint)~~
+
+Let's begin by some complaint as useful. As I mentioned before, the Flutter Web is torturing me right now.
+
+As we all know Flutter Web is still maturing as a solution. With the Flutter team's dedicated efforts throughout 2024 to push Flutter WASM (WebAssembly), it is still a long way for Flutter to go. Yes, the Flutter team consists of talented and capable developers, and any current limitations aren't necessarily due to Flutter's immaturity. Rather, the web ecosystem is already highly sophisticated and well-established, which means Flutter has limited competitive advantages for most types of web applications compared to traditional web technologies.
+
+Let's talk about this by some questions: What is the benefit to use Flutter?
+
+From my understanding, the key benefits of Flutter can be summarised in these 5 points:
+
+1. Cross-platform development with minimal platform-specific adaptations required
+2. Rapid development cycle enabled by comprehensive built-in UI widget library
+3. Direct UI rendering without a JavaScript bridge, leading to better performance
+4. Familiar syntax for web developers - similar to Angular and React class components, with Dart being syntactically close to JavaScript
+5. Robust type safety and code generation tools for enhanced development experience
+
+Well, it look so good, isn't it?
+
+But what if we are only developing a website?
+
+1. The cross-platform capabilities become redundant when developing solely for web, and we may gain some minor benefits in terms of browser compatibility.
+2. Whilst Flutter has a lot of built-in widget library compared to native development or React Native, but it is almost nothing in comparison to JavaScript's vast ecosystem.
+3. There is a fun fact that, JavaScript performance is rarely a bottleneck in web applications - 99% of cases run perfectly smooth without WASM or Web Workers. The real performance challenges in frontend development typically stem from virtual DOM or DOM rendering inefficiencies.
+4. Though Dart offers more modern language features, JavaScript's extraordinary flexibility often leads to more reusable and adaptable code patterns.
+5. Type safety and robust code generation tools are perhaps the only Flutter benefits I would genuinely miss if moving away from Dart development.
+
+Then what do we lose if we are using Flutter?
+
+1. Access to JavaScript's vast ecosystem - as we all know that new JavaScript libraries are published every minute.
+2. Limited ability to implement web performance optimisations like code splitting, lazy loading, and server-side rendering.
+3. Poor support for Search Engine Optimisation (SEO), making it challenging to improve website visibility.
+4. Difficulty implementing web-specific features such as advanced logging and browser-specific APIs.
+5. Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
+6. The debugger, hot reload and font rendering on Flutter web likes a joke compare with Flutter on mobile platform.
+7. Built-in widgets are primarily mobile-focused with limited optimisation for desktop/web interfaces.
+8. Complex web components like forms, data tables and charts are more challenging to implement effectively.
+9. Flutter's context management became much worse in the traditional desktop layout.
+10. Users need to download a WebAssembly (WASM) runtime environment (approximately 10MB) during their first visit to the website, which can significantly impact initial load times and user experience
+11. Most of the third party libraries are also mobile focusing and some of them are not WASM ready.
+
+And the last thing I wanted to mentioned is the responsive design on the Flutter Web.
+
+You may know that the traditional web development were using CSS to style the website, and the CSS rendering thread which is handled by the browser and isolated from the main thread. 
+
+Over time, developers sought more efficient solutions, leading to the evolution of CSS methodologies. This progression included SCSS for better code organisation, CSS-in-JS for component-scoped styling, and eventually Atomic CSS (Likes Tailwind) for optimised reusability - each addressing different challenges in web styling.
+
+Solutions are always more than the problem in web development, and you have to choice the best one for your use case.
+
+For responsive web design, you have several efficient options:
+
+- CSS media queries for basic responsive layouts
+- CSS variables/calculations for dynamic sizing
+- `matchMedia` API for conditional rendering
+- Server-side rendering for platform-specific optimisations
+
+In Flutter, everything we want to deal with the responsive design, we have to highly rely on `MediaQuery`.
 
 ## What is MediaQuery?
 
@@ -178,7 +237,9 @@ class PageTwo extends StatelessWidget {
 }
 ```
 
-The reason why the page one got rebuilt is that the screen size changing will trigger the `MaterialApp` rebuild, and it will causes the rebuild of `Navigator` and `MediaQuery`. Then, the `Scaffold` widget will overwrite the `MediaQueryData` for child
+The reason why the page one got rebuilt is that the screen size changing will trigger the `MaterialApp` rebuild, and it will causes the rebuild of `Navigator` and `MediaQuery`. Then, the `Scaffold` widget will overwrite the `MediaQueryData` for child.
+
+In a nutshell, you can just treat the `Scaffold` as `RepaintBoundary` for each pop up or new page to prevent unwanted rendering.
 
 ```Dart
 void _addIfNonNull(
@@ -219,7 +280,7 @@ void _addIfNonNull(
 }
 ```
 
-In Flutter 3.10, there were a branch of APIs that make your life much more easier. It called [`Media.propertyOf`](https://www.youtube.com/watch?v=xVk1kPvkgAY&themeRefresh=1), so you can use `MediaQuery.sizeOf` or `MediaQuery.paddingOf`. It just likes a selector of the `MediaQuery`, only rebuild when the properties was actually changed.
+In Flutter 3.10, there were a branch of APIs that make your life much more easier. It called [`MediaQuery.propertyOf`](https://www.youtube.com/watch?v=xVk1kPvkgAY&themeRefresh=1), so you can use `MediaQuery.sizeOf` or `MediaQuery.paddingOf`. It just likes a selector of the `MediaQuery`, only rebuild when the properties was actually changed.
 
 > Use of this method will cause the given context to rebuild any time that the MediaQueryData.size property of the ancestor MediaQuery changes.
 
