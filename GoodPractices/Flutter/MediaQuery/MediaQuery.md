@@ -1,16 +1,16 @@
 # Flutter Web MediaQuery, what you should know
 
-Responsive design is a nightmare for many frontend developers, particularly when developing applications without careful planning and design consideration. Poor responsive design choices can exponentially increase the complexity of debugging and testing processes.
+Responsive design is always a nightmare for many frontend developers, particularly when developing applications without careful planning and design consideration. Poor responsive design choices can exponentially increase the complexity of debugging and testing processes.
 
 Flutter was developed to handle cross-platform solution in the first day. It effectively addresses the challenges of building applications for multiple platforms whilst maintaining a single codebase. If you are developing mobile app in a startup company or you are implementing some performance sensitive requirement, Flutter can provide much better experience than React Native. It is a very good idea to render the UI with its own way to tackle with the fragmentation problem of Android devices. I can continually bragging Flutter for saving my life in development, until I was asked to develop a Flutter Web application.
 
 In this article, I will describe some of my understanding on responsive design with `MediaQuery` in Flutter, focusing on practical approaches and common pitfalls to avoid.
 
-## Context~~(Complaint)~~
+## Context(~~Out of topic complaint~~)
 
 Let's begin by some complaint as useful. As I mentioned before, the Flutter Web is torturing me right now.
 
-As we all know Flutter Web is still maturing as a solution. With the Flutter team's dedicated efforts throughout 2024 to push Flutter WASM (WebAssembly), it is still a long way for Flutter to go. Yes, the Flutter team consists of talented and capable developers, and any current limitations aren't necessarily due to Flutter's immaturity. Rather, the web ecosystem is already highly sophisticated and well-established, which means Flutter has limited competitive advantages for most types of web applications compared to traditional web technologies.
+As we all know Flutter Web is still maturing as a solution. Even with the Flutter team's dedicated efforts throughout 2024 to push Flutter WASM (WebAssembly), it is still a long way for Flutter to go. Yes, the Flutter team consists of talented and capable developers, and any current limitations aren't necessarily due to Flutter's immaturity. Rather, the web ecosystem is already highly sophisticated and well-established, which means Flutter has limited competitive advantages for most types of web applications compared to traditional web technologies.
 
 Let's talk about this by some questions: What is the benefit to use Flutter?
 
@@ -48,16 +48,16 @@ Then what do we lose if we are using Flutter?
 
 And the last thing I wanted to mentioned is the responsive design on the Flutter Web.
 
-You may know that the traditional web development were using CSS to style the website, and the CSS rendering thread which is handled by the browser and isolated from the main thread. 
+You may know that the traditional web development were using **CSS** to style the website, and the **CSS** rendering thread which is handled by the browser and isolated from the main thread. 
 
-Over time, developers sought more efficient solutions, leading to the evolution of CSS methodologies. This progression included SCSS for better code organisation, CSS-in-JS for component-scoped styling, and eventually Atomic CSS (Likes Tailwind) for optimised reusability - each addressing different challenges in web styling.
+Over time, developers sought more efficient solutions, leading to the evolution of **CSS** methodologies. This progression included **SCSS** for better code organisation, CSS-in-JS for component-scoped styling, and eventually Atomic CSS (Likes Tailwind) for optimised reusability - each addressing different challenges in web styling.
 
 Solutions are always more than the problem in web development, and you have to choice the best one for your use case.
 
 For responsive web design, you have several efficient options:
 
-- CSS media queries for basic responsive layouts
-- CSS variables/calculations for dynamic sizing
+- **CSS** media queries for basic responsive layouts
+- **CSS** variables/calculations for dynamic sizing
 - `matchMedia` API for conditional rendering
 - Server-side rendering for platform-specific optimisations
 
@@ -65,16 +65,20 @@ In Flutter, everything we want to deal with the responsive design, we have to hi
 
 ## What is MediaQuery?
 
+### Usage
+
 If you has experience on media query in [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries), media query in Flutter is a very easy concept for you to hand on.
 
 You can use `MediaQuery.of(context)` to get the `MediaQueryData`. Then you can get a lot of useful information about the device.
 
-1. size: the size of the screen size
-2. padding: the padding of the **Status Bar** or **Safe Area**
-3. viewInsets: keyboard height
-4. viewPadding: the same as `padding`, but the `bottom` won't change when the keyboard is showing
+1. `size`: the size of the screen size
+2. `padding`: the padding of the **Status Bar** or **Safe Area**
+3. `viewInsets`: keyboard height
+4. `viewPadding`: the same as `padding`, but the `bottom` won't change when the keyboard is showing
 
 These feature is very useful in our daily development.
+
+### Problem
 
  If you have experience of using it, you may notice that the widget that has `MediaQuery.of(context)` will be rebuilt when the viewport is changed.
 
@@ -83,7 +87,7 @@ These feature is very useful in our daily development.
  print(MediaQuery.of(context));
  ```
 
-If you see the source code. You will see that `MediaQuery` class is actually extending `InheritedWidget`. And as we all know, it means that `MediaQuery.of(context)` is strong binding the `context`.
+Let's has a look on source code. You can see that `MediaQuery` class is actually extending `InheritedWidget`. And as we all know, it means that `MediaQuery.of(context)` is strong binding the `context`.
 
 ```Dart
 // InheritedModel is extending InheritedWidget
@@ -96,7 +100,11 @@ class MediaQuery extends InheritedModel<_MediaQueryAspect> {
   });
 ```
 
-You may encounter a significant performance issue: Every widget that uses `MediaQuery` will be rebuilt whenever there's a change. Consider a stock trading application with 100 widgets receiving real-time WebSocket updates. If you attempt to type numbers to place a trade order, all widgets will rebuild simultaneously. This creates a severe performance bottleneck, particularly on mobile devices where resources are more constrained.
+You may notice a significant performance issue: Every widget that uses `MediaQuery` will be rebuilt whenever there's a change. Consider a stock trading application with 100 widgets receiving real-time WebSocket updates. If you attempt to type numbers to place a trade order, all widgets will rebuild simultaneously. This creates a severe performance bottleneck, particularly on mobile devices where resources are more constrained.
+
+Although Flutter styling is also running in the separated thread likes **CSS**, but there is one major difference: **CSS** won't affect the main tread until you call `matchMedia` manual or listen to it. 
+
+In Flutter, you have to always listen to the `MediaQuery` and rebuild the widgets that depend on it. Also, you are not only listen to one property, but all of the properties in the `MediaQueryData`
 
 ```Dart
 class MyApp extends StatelessWidget {
@@ -114,12 +122,13 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 ```
 
 So, how can we solve this issue?
 
-## Solution
+## Solutions
+
+### builder pattern
 
 Previously, Flutter has a global parameter [useInheritedMediaQuery(Deprecated)](https://api.flutter.dev/flutter/widgets/WidgetsApp/useInheritedMediaQuery.html) to reduce the unnecessary creating `MediaQueryData`. But it was deprecated now, so we won't cover this in this article.
 
@@ -218,6 +227,8 @@ class PageTwo extends StatelessWidget {
 
 > It is desperate, isn't it?
 
+### Scaffold
+
 It am going to provide a solution that may surprise you, you can use `Scaffold` to wrap the media query.
 
 ```Dart
@@ -240,6 +251,8 @@ class PageTwo extends StatelessWidget {
 The reason why the page one got rebuilt is that the screen size changing will trigger the `MaterialApp` rebuild, and it will causes the rebuild of `Navigator` and `MediaQuery`. Then, the `Scaffold` widget will overwrite the `MediaQueryData` for child.
 
 In a nutshell, you can just treat the `Scaffold` as `RepaintBoundary` for each pop up or new page to prevent unwanted rendering.
+
+> The source code of the `Scaffold`
 
 ```Dart
 void _addIfNonNull(
@@ -280,7 +293,15 @@ void _addIfNonNull(
 }
 ```
 
-In Flutter 3.10, there were a branch of APIs that make your life much more easier. It called [`MediaQuery.propertyOf`](https://www.youtube.com/watch?v=xVk1kPvkgAY&themeRefresh=1), so you can use `MediaQuery.sizeOf` or `MediaQuery.paddingOf`. It just likes a selector of the `MediaQuery`, only rebuild when the properties was actually changed.
+## MediaQuery.propertyOf
+
+From Flutter 3.10, there were a branch of APIs that make your life much more easier. It called [`MediaQuery.propertyOf`](https://www.youtube.com/watch?v=xVk1kPvkgAY&themeRefresh=1), so you can use `MediaQuery.sizeOf` or `MediaQuery.paddingOf`. It just likes a selector of the `MediaQuery`, only rebuild when the properties was actually changed.
 
 > Use of this method will cause the given context to rebuild any time that the MediaQueryData.size property of the ancestor MediaQuery changes.
+
+With these APIs, you can have more granular control over rendering by selecting specific MediaQuery properties. This helps prevent unnecessary rebuilds when only certain properties change. However, it's still important to be mindful of widget rebuilds and use these APIs judiciously where they make sense for your specific use case.
+
+## Conclusion
+
+In conclusion, while Flutter's `MediaQuery` provides essential functionality for responsive design, it comes with performance overhead that developers need to carefully manage. Although the latest did provide new APIs to make your life much easier, it still need the developer to consider architecture very careful. Also, the `MediaQuery` still could be a potential bottleneck of performance in some case, and you may need some extra measure to resolve it.
 
