@@ -67,8 +67,29 @@ Every time I see this slogan, I need to take a deep breath to calm down. Much of
 
 ### Perforamnce on the Flutter Web
 
+There is a fun fact that, JavaScript performance is rarely a bottleneck in web applications - 99% of cases run perfectly smooth without WASM or Web Workers. The real performance challenges in frontend development typically stem from virtual DOM or DOM rendering inefficiencies.
+
+For that reason, I conducted some benchmarks and discovered several key insights:
+
+1. With WebAssembly (WASM), Dart executes basic computations approximately 3x faster than JavaScript.
+2. Flutter's rendering system performs significantly worse than React - particularly with large widget trees, where rebuilding costs scale much more poorly than React's approach.
+3. Flutter's animation frame rates drop noticeably when the main isolate is under load - though this aligns with typical game rendering behavior.
+4. CSS is god
+
+> The benchmarks consisted of computing Fibonacci sequences for performance testing, and a list rendering test with complex styled items and hover animations for UI performance.
+
+While Dart's superior computational speed makes sense, Flutter Web's subpar rendering performance still requires explanation. The key in the legacy of web development - browser vendors have spent over three decades optimizing browser performance in almost all aspects, with CSS playing a crucial role. You can explore concepts like [Repaint](https://developer.mozilla.org/en-US/docs/Glossary/Repaint) and [Reflow](https://developer.mozilla.org/en-US/docs/Glossary/Reflow) to understand this better. The fundamental advantage of native websites is their multi-threaded architecture, where most CSS animations and interactions are runing in the GUI threads instead of main JavaScript main thread.
+
+Additionally, Flutter handles all rendering internally across platforms, preventing it from leveraging browser-specific optimizations and acceleration features. Moreover, browser rendering engines are implemented in C++, which offers significantly better performance compared to Dart's execution speed.
+
 ### Familar syntax for web developers
 
+The familiar syntax of Dart can be an advantage, but primarily when developing cross-platform applications that include mobile and desktop targets. Frontend developers, who make up a significant portion of the development workforce, generally find it easier to learn Dart due to its similarities with JavaScript.
+
+However, for web-only applications, Flutter Web is generally not recommended. Frontend developers can typically implement features more efficiently using React or other traditional web frameworks, as they are already familiar with browser compatibility issues and the JavaScript ecosystem. The learning curve for web development using Flutter can be steeper, since many Flutter developers come from a mobile background and may lack experience with web-specific best practices and constraints. Additionally, browser compatibility challenges in traditional web development are often more straightforward to handle compared to mobile device compatibility issues. This is one reason why Flutter is predominantly chosen for mobile app development rather than web applications.
+
 ### Type Safe
+
+Dart's type safety ecosystem could be the only convincing benefit among these points. JavaScript's weak typing system poses significant challenges in large projects, which is why many teams have adopted TypeScript. However, TypeScript requires manual configuration of linters and tsconfig files, while Flutter provides these safeguards out of the box. Additionally, TypeScript's powerful but complex type system has a steep learning curve and demands a high level of expertise from team members. In contrast, Dart's type system is much simpler.
 
 ## The significant limitations and drawbacks of Flutter Web
