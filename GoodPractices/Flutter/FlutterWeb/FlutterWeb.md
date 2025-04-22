@@ -22,7 +22,7 @@ Since I specifically mentioned "Not Web" above, I will explain each of these adv
 
 And this is the disadvantages I said, in the case we use Flutter to develop the web App.
 
-1. Access to JavaScript's vast ecosystem - as we all know that new JavaScript libraries are published every minute.
+1. Access to JavaScript's vast ecosystem
 2. Limited ability to implement web performance optimisations like code splitting, lazy loading, and server-side rendering.
 3. Poor support for Search Engine Optimisation (SEO), making it challenging to improve website visibility.
 4. Difficulty implementing web-specific features such as advanced logging and browser-specific APIs.
@@ -69,14 +69,45 @@ Every time I see this slogan, I need to take a deep breath to calm down. Much of
 
 There is a fun fact that, JavaScript performance is rarely a bottleneck in web applications - 99% of cases run perfectly smooth without WASM or Web Workers. The real performance challenges in frontend development typically stem from virtual DOM or DOM rendering inefficiencies.
 
-For that reason, I conducted some benchmarks and discovered several key insights:
+For that reason, I did some small benchmark with my basic model of M1 Pro MacBook Pro:
+
+#### Fibonacci for calculation performance
+
+![fibonacci-flutter-web-wasm](./fibonacci-flutter-web-wasm.jpeg)
+![fibonacci-flutter-web](./fibonacci-flutter-web.jpeg)
+![fibonacci-react](./fibonacci-react.jpeg)
+
+We can see that WASM did help the performance a lot in calculation performance.
+
+#### Rendering performance
+
+![rendering-flutter-web-wasm](./rendering-flutter-web-wasm.jpeg)
+![rendering-flutter-web](./rendering-flutter-web.jpeg)
+![rendering-react](./rendering-react.jpeg)
+
+The results paint a clear picture - Flutter Web's rendering performance significantly slower than React, and this performance gap widens even further when we introduce more complex styling to the rendered items. This outcome, while disappointing, aligns with expectations given Flutter Web's architectural approach to rendering.
+
+#### What about the rendering performance on the mobile platform?
+
+I also did a small benchmark on the mobile platform with my device:
+
+![fibonacci-ios](./fibonacci-ios.jpeg)
+![fibonacci-ipad-os](./fibonacci-ipad-os.jpeg)
+![rendering-ios](./rendering-ios.jpeg)
+![rendering-ipad-os](./rendering-ipad-os.jpeg)
+
+If we consider the performance difference between these chips. We can see that the performance on mobile platform is much better than Flutter Web, but it is still not as good as React on the browser.
+
+#### Conclusion
+
+I conducted some benchmarks and discovered several key insights:
 
 1. With WebAssembly (WASM), Dart executes basic computations approximately 3x faster than JavaScript.
 2. Flutter's rendering system performs significantly worse than React - particularly with large widget trees, where rebuilding costs scale much more poorly than React's approach.
 3. Flutter's animation frame rates drop noticeably when the main isolate is under load - though this aligns with typical game rendering behavior.
 4. CSS is god
 
-> The benchmarks consisted of computing Fibonacci sequences for performance testing, and a list rendering test with complex styled items and hover animations for UI performance.
+> These benchmarks are chosen for describing the main problem of Flutter Web. The real world performance is much more complex and depends on many factors.
 
 While Dart's superior computational speed makes sense, Flutter Web's subpar rendering performance still requires explanation. The key in the legacy of web development - browser vendors have spent over three decades optimizing browser performance in almost all aspects, with CSS playing a crucial role. You can explore concepts like [Repaint](https://developer.mozilla.org/en-US/docs/Glossary/Repaint) and [Reflow](https://developer.mozilla.org/en-US/docs/Glossary/Reflow) to understand this better. The fundamental advantage of native websites is their multi-threaded architecture, where most CSS animations and interactions are runing in the GUI threads instead of main JavaScript main thread.
 
@@ -93,3 +124,27 @@ However, for web-only applications, Flutter Web is generally not recommended. Fr
 Dart's type safety ecosystem could be the only convincing benefit among these points. JavaScript's weak typing system poses significant challenges in large projects, which is why many teams have adopted TypeScript. However, TypeScript requires manual configuration of linters and tsconfig files, while Flutter provides these safeguards out of the box. Additionally, TypeScript's powerful but complex type system has a steep learning curve and demands a high level of expertise from team members. In contrast, Dart's type system is much simpler.
 
 ## The significant limitations and drawbacks of Flutter Web
+
+### Access to JavaScript's vast ecosystem - as we all know that new JavaScript libraries are published every minute.
+
+### Limited ability to implement web performance optimisations like code splitting, lazy loading, and server-side rendering.
+
+### Poor support for Search Engine Optimisation (SEO), making it challenging to improve website visibility.
+
+### Difficulty implementing web-specific features such as advanced logging and browser-specific APIs.
+
+### Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
+
+### The debugger, hot reload and font rendering on Flutter web likes a joke compare with Flutter on mobile platform.
+
+### Built-in widgets are primarily mobile-focused with limited optimisation for desktop/web interfaces.
+
+### Complex web components like forms, data tables and charts are more challenging to implement effectively.
+
+### Flutter's context management became much worse in the traditional desktop layout.
+
+### Users need to download a WebAssembly (WASM) runtime environment (approximately 10MB) during their first visit to the website, which can significantly impact initial load times and user experience
+
+### Most of the third party libraries are also mobile focusing and some of them are not WASM ready.
+
+### Responsive design are hard to manage on Flutter
