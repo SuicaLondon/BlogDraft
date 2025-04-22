@@ -4,7 +4,7 @@ As many people saw on my Twitter, I recently experienced some mental health chal
 
 To be honest, I remain a passionate advocate for Flutter's mobile development capabilities. However, I cannot endorse Flutter Web in any capacity, and I will explain my reasoning throughout this article.
 
-![My pain is over you](./my-pain-is-over-you.jpeg)
+![My pain is over you](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/my-pain-is-over-you.jpeg?raw=true)
 
 ## What happened?
 
@@ -41,7 +41,7 @@ Flutter works really well on mobile - about 25% of apps in the App Store are mad
 
 I had heard countless times about Flutter's success, and I believed in it too, until the Titan broke through the wall.
 
-![Titan Broke the wall](./titan-break-the-wall.png)
+![Titan Broke the wall](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/titan-break-the-wall.png?raw=true)
 
 ### Cross-platform development
 
@@ -73,17 +73,17 @@ For that reason, I did some small benchmark with my basic model of M1 Pro MacBoo
 
 #### Fibonacci for calculation performance
 
-![fibonacci-flutter-web-wasm](./fibonacci-flutter-web-wasm.jpeg)
-![fibonacci-flutter-web](./fibonacci-flutter-web.jpeg)
-![fibonacci-react](./fibonacci-react.jpeg)
+![fibonacci-flutter-web-wasm](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-flutter-web-wasm.jpeg?raw=true)
+![fibonacci-flutter-web](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-flutter-web.jpeg?raw=true)
+![fibonacci-react](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-react.jpeg?raw=true)
 
 We can see that WASM did help the performance a lot in calculation performance.
 
 #### Rendering performance
 
-![rendering-flutter-web-wasm](./rendering-flutter-web-wasm.jpeg)
-![rendering-flutter-web](./rendering-flutter-web.jpeg)
-![rendering-react](./rendering-react.jpeg)
+![rendering-flutter-web-wasm](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/rendering-flutter-web-wasm.jpeg?raw=true)
+![rendering-flutter-web](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/rendering-flutter-web.jpeg?raw=true)
+![rendering-react](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/rendering-react.jpeg?raw=true)
 
 The results paint a clear picture - Flutter Web's rendering performance significantly slower than React, and this performance gap widens even further when we introduce more complex styling to the rendered items. This outcome, while disappointing, aligns with expectations given Flutter Web's architectural approach to rendering.
 
@@ -91,10 +91,10 @@ The results paint a clear picture - Flutter Web's rendering performance signific
 
 I also did a small benchmark on the mobile platform with my device:
 
-![fibonacci-ios](./fibonacci-ios.jpeg)
-![fibonacci-ipad-os](./fibonacci-ipad-os.jpeg)
-![rendering-ios](./rendering-ios.jpeg)
-![rendering-ipad-os](./rendering-ipad-os.jpeg)
+![fibonacci-ios](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-ios.jpeg?raw=true)
+![fibonacci-ipad-os](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-ipad-os.jpeg?raw=true)
+![rendering-ios](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/rendering-ios.jpeg?raw=true)
+![rendering-ipad-os](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/rendering-ipad-os.jpeg?raw=true)
 
 If we consider the performance difference between these chips. We can see that the performance on mobile platform is much better than Flutter Web, but it is still not as good as React on the browser.
 
