@@ -125,7 +125,17 @@ Dart's type safety ecosystem could be the only convincing benefit among these po
 
 ## The significant limitations and drawbacks of Flutter Web
 
+Except for losing the benefits of Flutter, it also have a lot of limitations and drawbacks, compare with the traditional web development.
+
 ### Access to JavaScript's vast ecosystem - as we all know that new JavaScript libraries are published every minute.
+
+As we all know, JavaScript has the most popular and powerful ecosystem in the world. Every minute, it has a new JavaScript libraries are published. If you want to develop something, the solution is always more than the problem.
+
+Until June 2024, there were totally 3.1 million JavaScript libraries on npm, while there were only 550000 libraries on pub.dev in the later of 2024.
+
+For example, when building a commercial back-office application, a robust and performant data grid component is essential. In the Flutter ecosystem, the [Syncfusion Data Grid](https://pub.dev/packages/syncfusion_flutter_datagrid) is the only enterprise-grade option. While it offers comprehensive APIs, documentation, and demos, it comes with a significant commercial licensing cost monthly. In JavaScript ecosystem, it would be considered B tier when compared to the numerous high-quality data grid libraries available, where developers can choose from multiple free and open-source options with comparable or superior functionality. If the developer really have that heavy requirement, why not just pay for the [AG Grid](https://www.ag-grid.com/)?
+
+Let's don't talk about the aspect that nobody use Flutter to build. Only idiot will use Flutter to build a web app with many tables features.
 
 ### Limited ability to implement web performance optimisations like code splitting, lazy loading, and server-side rendering.
 
