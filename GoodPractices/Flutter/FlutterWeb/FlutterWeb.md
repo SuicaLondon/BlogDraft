@@ -173,6 +173,65 @@ Since Flutter Web renders everything to canvas rather than generating HTML DOM e
 
 ### Difficulty implementing web-specific features such as advanced logging and browser-specific APIs.
 
+While browsers provide extensive APIs for web development, Flutter Web's approach to accessing these APIs is cumbersome and limited.
+
+For example, browsers provide different logging APIs through the `console` object - you can use `console.group` to group logs, `console.count` to count occurrences, or `console.table` to display data in a table format. However, Flutter Web only provides basic integration with `console.log`. In previous versions, you needed to import the `package:html` library to use the console object. Now with WASM support, you need to import `package:web` instead. The awkward part is that these methods are not type-safe at all, and they don't fully match the Web standard.
+
+Also, it has totally different behavior on the browser to use different logging API.
+
+```dart
+import 'package:web/web.dart' show console;
+import 'developer.dart';
+
+// This will log on the terminal and browser console
+print('Hello, World!');
+
+// This will only log on the terminal
+log('Hello, World!');
+
+// This will only log on the browser console
+console.log('Hello, World!');
+```
+
+If you want to close the current window?
+
+```Dart
+import 'package:web/web.dart' show window;
+
+window.close();
+```
+
+Sometimes, you may want to change global browser behaviors, like disabling the macOS Chrome swipe-to-go-back gesture on certain pages. However, modifying these global browser behaviors in Flutter Web is quite challenging and requires complex workarounds.
+
+```dart
+import 'package:web/web.dart' show document;
+
+final style = document.documentElement?.getAttribute('style');
+
+if (style != null) {
+  document.documentElement?.setAttribute(
+      'style',
+      'overflow: hidden;overscroll-behavior: none;${style ?? ''}'.trim(),
+    );
+}
+```
+
+And, don't forget to remove the style when the page is closed.
+
+```dart
+import 'package:web/web.dart' show document;
+
+final style = document.documentElement?.getAttribute('style')?.replaceAll('overflow: hidden;overscroll-behavior: none;', '');
+if (style != null) {
+    document.documentElement?.setAttribute(
+    'style',
+    style,
+    );
+} else {
+    document.documentElement?.removeAttribute('style');
+}
+```
+
 ### Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
 
 ### The debugger, hot reload and font rendering on Flutter web likes a joke compare with Flutter on mobile platform.
@@ -188,3 +247,7 @@ Since Flutter Web renders everything to canvas rather than generating HTML DOM e
 ### Most of the third party libraries are also mobile focusing and some of them are not WASM ready.
 
 ### Responsive design are hard to manage on Flutter
+
+```
+
+```
