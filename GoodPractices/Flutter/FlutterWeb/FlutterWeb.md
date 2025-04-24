@@ -23,7 +23,7 @@ Since I specifically mentioned "Not Web" above, I will explain each of these adv
 And this is the disadvantages I said, in the case we use Flutter to develop the web App.
 
 1. Access to JavaScript's vast ecosystem
-2. Limited ability to implement web performance optimisations like code splitting, lazy loading, and server-side rendering.
+2. Limited ability to implement web performance optimisations likes static site generation, streaming, and server-side rendering.
 3. Poor support for Search Engine Optimisation (SEO), making it challenging to improve website visibility.
 4. Difficulty implementing web-specific features such as advanced logging and browser-specific APIs.
 5. Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
@@ -133,13 +133,43 @@ As we all know, JavaScript has the most popular and powerful ecosystem in the wo
 
 Until June 2024, there were totally 3.1 million JavaScript libraries on npm, while there were only 550000 libraries on pub.dev in the later of 2024.
 
-For example, when building a commercial back-office application, a robust and performant data grid component is essential. In the Flutter ecosystem, the [Syncfusion Data Grid](https://pub.dev/packages/syncfusion_flutter_datagrid) is the only enterprise-grade option. While it offers comprehensive APIs, documentation, and demos, it comes with a significant commercial licensing cost monthly. In JavaScript ecosystem, it would be considered B tier when compared to the numerous high-quality data grid libraries available, where developers can choose from multiple free and open-source options with comparable or superior functionality. If the developer really have that heavy requirement, why not just pay for the [AG Grid](https://www.ag-grid.com/)?
+For example, when building a commercial back-office application, a robust and performant data grid component is essential. If you have experience with traditional frontend development, you may be disappointed with the options available on pub.dev. The most popular table package [pluto_grid](https://pub.dev/packages/pluto_grid) has an attractive interface but offers only half of the functionality in [TanStack Table](https://tanstack.com/table/latest). The second most popular option, [Syncfusion Data Grid](https://pub.dev/packages/syncfusion_flutter_datagrid), is the only enterprise-grade solution available. While it provides comprehensive APIs, documentation, demos, and good test coverage, it requires a significant monthly commercial license fee. In the JavaScript ecosystem, this would be considered mid-tier at best, given the abundance of high-quality data grid libraries where developers can choose from multiple free and open-source options with comparable or superior features. For applications with demanding data grid requirements, it may make more sense to invest in established solutions like [AG Grid](https://www.ag-grid.com/) rather than settling for limited Flutter options.
 
-Let's don't talk about the aspect that nobody use Flutter to build. Only idiot will use Flutter to build a web app with many tables features.
+### Limited ability to implement web performance optimisations like static site generation, streaming, and server-side rendering.
 
-### Limited ability to implement web performance optimisations like code splitting, lazy loading, and server-side rendering.
+If you arer not developing a backoffice application, and you want to build some user facing application, you will need to very careful about the bundle size and the performance of your application. As we all know, the Flutter Web is a extremely slow if you are not using WASM. What is the trade off of using WASM? If you have some experience with C# Blazor, you may know that for all WASM applications, the user need to download a WASM runtime environment (approximately 10MB) during their first visit to the website, it is very huge for a user facing application. Although the WASM runtime in Flutter Web is just start from 1.1MB, it is still a trade off.
+
+Furthermore, Flutter Web applications typically operate as single-page applications (SPAs) with limited server-side runtime control. This architecture restricts the implementation of crucial web performance optimizations like static site generation (SSG), server-side rendering (SSR), and streaming. While Flutter has made progress by implementing hot reload for web development, its integration with lazy loading remains immature. The API design for custom error pages and lazy-loaded content is very ugly and hard to use.
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      builder: (context, widget) {
+        Widget error = const Text('...rendering error...');
+        if (widget is Scaffold || widget is Navigator) {
+          error = Scaffold(body: Center(child: error));
+        }
+        ErrorWidget.builder = (errorDetails) => error;
+        if (widget != null) return widget;
+        throw StateError('widget is null');
+      },
+    );
+  }
+}
+```
+
+If you have experience with Single Page Applications (SPAs) in React, you'll understand that lazy loading alone cannot fundamentally solve first screen loading issues as projects grow larger. The ultimate solution typically involves static site generation (SSG) or server-side rendering (SSR). However, since Flutter Web renders everything to canvas rather than generating HTML/DOM elements, implementing SSG or SSR becomes technically impossible. The server cannot pre-render content when there is no HTML markup to generate - everything is handled client-side through canvas rendering.
 
 ### Poor support for Search Engine Optimisation (SEO), making it challenging to improve website visibility.
+
+Since Flutter Web renders everything to canvas rather than generating HTML DOM elements, search engine crawlers have nothing to index or analyze. Search engines like Google rely on parsing HTML content and metadata to understand and rank web pages. Without a DOM structure, crawlers see an empty canvas with no semantic meaning or indexable content. Additionally, the inability to implement server-side rendering means the server can only serve a blank SPA shell - there's no pre-rendered content for crawlers to discover during their initial page scan. This makes Flutter Web applications essentially invisible to search engines, severely limiting their SEO potential and organic discoverability.
+
+> Google Search Crawler: I have nothing to do, so I just go home.
+> Server: I also have nothing to do, so I also just go home.
 
 ### Difficulty implementing web-specific features such as advanced logging and browser-specific APIs.
 
