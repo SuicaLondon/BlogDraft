@@ -137,7 +137,7 @@ For example, when building a commercial back-office application, a robust and pe
 
 ### Limited ability to implement web performance optimisations like static site generation, streaming, and server-side rendering.
 
-If you arer not developing a backoffice application, and you want to build some user facing application, you will need to very careful about the bundle size and the performance of your application. As we all know, the Flutter Web is a extremely slow if you are not using WASM. What is the trade off of using WASM? If you have some experience with C# Blazor, you may know that for all WASM applications, the user need to download a WASM runtime environment (approximately 10MB) during their first visit to the website, it is very huge for a user facing application. Although the WASM runtime in Flutter Web is just start from 1.1MB, it is still a trade off.
+If you arer not developing a backoffice application, and you want to build some user facing application, you will need to very careful about the bundle size and the performance of your application. As we all know, the Flutter Web is a extremely slow if you are not using WASM. What is the trade off of using WASM? If you have some experience with C# Blazor, you may know that for all WASM applications, the user need to download a WASM runtime environment (approximately 10MB) during their first visit to the website, it is very huge for a user facing application. Although the WASM runtime in Flutter Web is just start from 1.1 MB, it is still a trade off.
 
 Furthermore, Flutter Web applications typically operate as single-page applications (SPAs) with limited server-side runtime control. This architecture restricts the implementation of crucial web performance optimizations like static site generation (SSG), server-side rendering (SSR), and streaming. While Flutter has made progress by implementing hot reload for web development, its integration with lazy loading remains immature. The API design for custom error pages and lazy-loaded content is very ugly and hard to use. Furthermore, Flutter Web WASM does not support the lazy loading or code splitting at all.
 
@@ -232,6 +232,8 @@ if (style != null) {
 }
 ```
 
+> Also, who is the idiot who add the cache for the localStorage in [shared_preferences](https://pub.dev/packages/shared_preferences)? Don't you know the localStorage is synchronous?
+
 ### Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
 
 Web developers are fortunate to have access to powerful browser DevTools that provide comprehensive debugging and profiling capabilities. However, since Flutter Web bypasses the DOM and renders directly to Canvas, the browser DevTools has nothign to do.
@@ -272,14 +274,46 @@ class CustomRow extends StatelessWidget {
 }
 ```
 
-With this context, you won't be suprised that the next I want to say. The Flutter built-in widgets are designed for the mobile platform, and they are not optimized for the desktop/web platform.
+With this context, you won't be surprised by what I'm about to say next. Flutter's built-in widgets are designed for mobile platforms and lack proper optimization for desktop/web interfaces. Since Flutter was initially built targeting mobile platforms, the UI framework was developed with a mobile-first mindset. While it supports many mobile-specific features like bottom sheets, it lacks native support for desktop/web essentials like side sheets or context menus (right-click menus).
+
+> It is very sarcastic that Flutter's Material Design is mobile first, while the MUI on React is desktop first.
+
+If you're brave enough to implement these yourself, great, but I must warn you about the notorious [Go Router](https://pub.dev/packages/go_router) [ShellRoute](https://pub.dev/documentation/go_router/latest/go_router/ShellRoute-class.html). You'll need a deep understanding of context management when using it, or you'll end up in a world of pain.
 
 ### Complex web components like forms, data tables and charts are more challenging to implement effectively.
 
+We've discussed the poor library support in Flutter Web, but let's examine why implementing good form components is particularly challenging. Web development has historically focused on back-office and management systems where forms and tables are fundamental components. Browsers have built-in optimizations for HTML elements like <table>, making it unnecessary to use virtualized lists for small tables.
+
+Flutter Web, however, renders everything as Canvas elements without these browser optimizations. Additionally, Flutter heavily relies on virtualization since it struggles to handle large numbers of nodes efficiently. Unless you implement these components at a lower level using Flutter's Element class, the performance will be significantly degraded compared to native web implementations.
+
+When the Flutter is Rendering, it will go through the following steps:
+
+Widget -> Element -> RenderObject -> Layer -> Canvas
+
+Every single widget creates its own `RenderObject`, and each one has to calculate its layout and paint itself - talk about inefficient! Meanwhile, React just needs to worry about the `Virtual DOM` and lets the browser handle all the heavy lifting. React is smart enough to only re-render what actually changed, and the DOM only updates when the `Virtual DOM` changes. The rest of the time, the browser's UI thread and event thread handle all the interactions without breaking a sweat. That is the reason why in the previous benchmark, the React has that dominant performance advantage.
+
+It is a common sense in the computer science world, if you have another layer, you will definitely have more performance loss.
+
 ### Flutter's context management became much worse in the traditional desktop layout.
 
-### Users need to download a WebAssembly (WASM) runtime environment (approximately 10MB) during their first visit to the website, which can significantly impact initial load times and user experience
+`Context` is a fundamental concept in Flutter that forms the backbone of the widget tree. While it works well in simple scenarios, providing an intuitive way to access widget data and state, it becomes problematic when working with state management solutions like [Bloc](https://pub.dev/packages/flutter_bloc) or [Provider](https://pub.dev/packages/provider) and especially with [Go Router](https://pub.dev/packages/go_router).
+
+When using context to access state from state management libraries, it's still reasonably straightforward - similar to how class-based web frameworks handle component `this` with context. Developers just need to understand where the context come from and can use a `Builder` widget when needed.
+
+However, things get significantly more abstract with Go Router's `ShellRoute`. Since `Context` is also responsible for managing widget positioning and dimensions, you're limited to accessing only the context of the current shell route. While Flutter provides widgets like `CompositedTransformFollower` and `CompositedTransformTarget` to help in some cases, you frequently end up having to store the ancestor widget's context using GlobalKeys in global variables just to access it from within the current shell route. This makes it extremely difficult to maintain widget isolation and breaks proper encapsulation principles.
+
+### Users need to download a WebAssembly (WASM) runtime environment, and WASM is not supported well in the current version.
+
+In the April 2025, the WASM runtime in Flutter Web is still not supported well. The WASM runtime is start from 1.1 MB, which is not a small size in web. Although it is relative small compare with 24 MB colorful emojis.
 
 ### Most of the third party libraries are also mobile focusing and some of them are not WASM ready.
 
+When discussing WASM support, we can't ignore the genius concept of "WASM ready" packages on pub.dev. A package being "WASM ready" means it's compatible with Flutter Web's WASM runtime. While packages without native code dependencies are typically WASM ready by default, there's a significant caveat with web-specific packages. The core `package:html` library, which many web-focused packages depend on, is not WASM ready. This has created a ripple effect where numerous older web-specific packages are incompatible with Flutter Web's WASM runtime, severely limiting the ecosystem of available web-focused packages. What is the library that made the breaking change that nobody used it anymore? Angular?
+
 ### Responsive design are hard to manage on Flutter
+
+As discussed in my previous article, implementing proper responsive design is exceptionally challenging in Flutter Web because Flutter applies mobile app development principles to web applications. Flutter's approach favors fixed sizing similar to mobile apps, which directly conflicts with web design best practices and will likely draw immediate criticism from web designers.
+
+While CSS provides robust responsive design capabilities through units like `vw`, `vh`, `rem`, and properties like `flex-wrap`, Flutter offers far fewer options. The only way to handle responsive layouts in Flutter is through programmatic `MediaQuery` checks and conditional rendering - an approach that's both slower and more complex than CSS alternatives.
+
+This limitation makes it easy to create brittle layouts that are difficult to maintain. For example, in CSS you can simply write `width: 50%; max-width: 1000px` in a class to create a responsive container. Achieving the same result in Flutter requires significantly more code and complexity.
