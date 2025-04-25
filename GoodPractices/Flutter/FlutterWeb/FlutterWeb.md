@@ -139,7 +139,7 @@ For example, when building a commercial back-office application, a robust and pe
 
 If you arer not developing a backoffice application, and you want to build some user facing application, you will need to very careful about the bundle size and the performance of your application. As we all know, the Flutter Web is a extremely slow if you are not using WASM. What is the trade off of using WASM? If you have some experience with C# Blazor, you may know that for all WASM applications, the user need to download a WASM runtime environment (approximately 10MB) during their first visit to the website, it is very huge for a user facing application. Although the WASM runtime in Flutter Web is just start from 1.1MB, it is still a trade off.
 
-Furthermore, Flutter Web applications typically operate as single-page applications (SPAs) with limited server-side runtime control. This architecture restricts the implementation of crucial web performance optimizations like static site generation (SSG), server-side rendering (SSR), and streaming. While Flutter has made progress by implementing hot reload for web development, its integration with lazy loading remains immature. The API design for custom error pages and lazy-loaded content is very ugly and hard to use.
+Furthermore, Flutter Web applications typically operate as single-page applications (SPAs) with limited server-side runtime control. This architecture restricts the implementation of crucial web performance optimizations like static site generation (SSG), server-side rendering (SSR), and streaming. While Flutter has made progress by implementing hot reload for web development, its integration with lazy loading remains immature. The API design for custom error pages and lazy-loaded content is very ugly and hard to use. Furthermore, Flutter Web WASM does not support the lazy loading or code splitting at all.
 
 ```dart
 class MyApp extends StatelessWidget {
@@ -234,9 +234,45 @@ if (style != null) {
 
 ### Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
 
+Web developers are fortunate to have access to powerful browser DevTools that provide comprehensive debugging and profiling capabilities. However, since Flutter Web bypasses the DOM and renders directly to Canvas, the browser DevTools has nothign to do.
+
+While Flutter does offer its own DevTools that work well for mobile development, many of these debugging features are not supported when developing for Flutter Web. This leaves developers with significantly reduced visibility and debugging capabilities compared to both traditional web development and Flutter mobile development.
+
 ### The debugger, hot reload and font rendering on Flutter web likes a joke compare with Flutter on mobile platform.
 
+As many Flutter developers know, Flutter has always had rendering issues on iOS - the letter spacing consistently differs from native iOS apps. While this was eventually fixed when the render engine was updated to the Impeller. This fix is not yet supported on Flutter Web. Flutter has made a [promise](https://docs.flutter.dev/perf/impeller#web) to update it, but without any timeline commitment.
+
+Additionally, there was a longstanding issue on Flutter Mobile where certain font weights could only be rendered properly on iOS. Guess what? The Web also has simular problem and never been fixed. [issue](https://github.com/material-foundation/flutter-packages/issues/35). Can you believe that Flutter Web doesn't even render colored emojis by default? Why? Because to render emojis with color, [it needs to import a massive 24MB bundle.🤡](https://github.com/flutter/engine/pull/40990)
+
 ### Built-in widgets are primarily mobile-focused with limited optimisation for desktop/web interfaces.
+
+As a Flutter enthusiast, I can quickly develop high-performance mobile apps with Flutter. In one instance, I completed a complex cross-platform feature for both phone and tablet by myself, while a web team of 4 developers worked on the same feature for mobile and desktop web. I was even faster than them. Despite being more efficient in that case, I must acknowledge that many built-in widgets have significant design and implementation issues.
+
+For example, the `TextField` widget is a real pain point. The error text is baked right into the widget itself, which becomes a nightmare when you want to customize the border or align things properly. The `Row` and `Column` widgets are also insance, whoever thought it was a good idea to make `mainAxisSize` default to `max`, I am going to slash him? It's completely unintuitive and forces you to constantly write extra code to override it. I've gotten so fed up with this that I just wrap these widgets with my own versions that default to `min` instead. At least that saves me from the constant headache of overriding it everywhere.
+
+```dart
+class CustomRow extends StatelessWidget {
+  final List<Widget> children;
+  // ...
+  const CustomRow({
+    super.key,
+    // ...
+    this.mainAxisSize = MainAxisSize.min,
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      // ...
+      mainAxisSize: mainAxisSize,
+      children: children,
+    );
+  }
+}
+```
+
+With this context, you won't be suprised that the next I want to say. The Flutter built-in widgets are designed for the mobile platform, and they are not optimized for the desktop/web platform.
 
 ### Complex web components like forms, data tables and charts are more challenging to implement effectively.
 
@@ -247,7 +283,3 @@ if (style != null) {
 ### Most of the third party libraries are also mobile focusing and some of them are not WASM ready.
 
 ### Responsive design are hard to manage on Flutter
-
-```
-
-```
