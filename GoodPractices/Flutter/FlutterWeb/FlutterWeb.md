@@ -113,6 +113,10 @@ While Dart's superior computational speed makes sense, Flutter Web's subpar rend
 
 Additionally, Flutter handles all rendering internally across platforms, preventing it from leveraging browser-specific optimizations and acceleration features. Moreover, browser rendering engines are implemented in C++, which offers significantly better performance compared to Dart's execution speed.
 
+There is another factor that is not the cause of this problem, but it is worth to mention. Almost all Dart code and engine are running in the same isolate.
+
+> I will explain this in the later part of this article.
+
 ### Access to JavaScript's vast ecosystem - as we all know that new JavaScript libraries are published every minute.
 
 As we all know, JavaScript has the most popular and powerful ecosystem in the world. New JavaScript libraries are published every minute. For almost any development need, the JavaScript ecosystem offers multiple solutions.
@@ -302,4 +306,24 @@ As discussed in my previous article, implementing proper responsive design is ex
 
 While CSS provides robust responsive design capabilities through units like `vw`, `vh`, `rem`, and properties like `flex-wrap`, Flutter offers far fewer options. The only way to handle responsive layouts in Flutter is through programmatic `MediaQuery` checks and conditional rendering - an approach that's both slower and more complex than CSS alternatives.
 
+Modern browsers utilize multiple threads - JavaScript, UI, Event, Timer and more - to efficiently handle different aspects of web applications. This architecture allows developers to utilize the CSS to implement complex UX with only the UI thread to implement the responsive design and beautiful animation.
+
+> That is what we call compositing-only animation. Only use the UI thread to do the animation.
+
+Flutter, however, is highly rely on the Main Thread (UI thread) to handle all logic and rendering. The engine and the Dart are totally runing in the same single isolate. This architectural choice not only impacts performance but also leads to tightly coupled code where UI and business logic are intertwined, making the codebase harder to maintain and reason about. It means that you may have to use a lot of isolates to offload the calculation to prevent the overwork of the main isolate.
+
+> Ideally, the desealisation may block the animation rendering.🤡 If you want to develop very high performance application in Flutter, you need to write a lot of isolates to offload the calculation.
+
+![Flutter main isolate](https://docs.flutter.dev/assets/images/docs/development/concurrency/isolate-bg-worker.png)
+
 This limitation makes it easy to create brittle layouts that are difficult to maintain. For example, in CSS you can simply write `width: 50%; max-width: 1000px` in a class to create a responsive container. Achieving the same result in Flutter requires significantly more code and complexity.
+
+> If you are saying that CSS is the hardest thing in the Computer Science, I will slash you with Tailwind CSS.
+
+### Conclusion
+
+As a developer that almost spent the whole career in the JavaScript, using the Flutter to develop the website is extremely painful. It just feel like a professional cook is watching some british people has no idea what is the cooking are using the A5 wagyu to make a Steak pie.
+
+The reason why I write this article is not to blame Flutter, but to share my experience and thoughts. I hope this article can help you to make a better decision.
+
+**_Wish the heaven does not have the Flutter Web._**
