@@ -94,7 +94,7 @@ function App() {
 
 This snippet is to create thousands of timers to take up the memory. When all is completed, the state of loaded will be changed to rerender the page to use memory. The memory usage was drawn below.
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Timer/memory.jpeg?raw=true" width="100%"/>
+![memory](https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Timer/memory.jpeg?raw=true)
 
 Ok, at least at Chrome, you don't have to release the timer when using **setTimeout**. The **_GC_** is smart enough to clear the out of date timers. Firefox has the same result and Safari's kit does not display the memory change when loaded changed. Maybe the next blog will research this problem (
 

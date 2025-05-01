@@ -10,11 +10,11 @@
 
 這個項目的設計很簡單，用戶輸入他們在 Wordle 網站上輸入的單字。然後，點擊字母來改變顏色以匹配其在 Wordle 網站上的結果。
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/wordle-plugin-gameplay.png?raw=true" width="100%"/>
+![wordle-plugin-gameplay](https://github.com/SuicaLondon/BlogDraft/blob/master/Project/WordleExtension/wordle-plugin-gameplay.png?raw=true)
 
 核心思想是從 Wordle 網站過濾單字。（單字集合可以在源代碼中找到）下圖是算法的思路，它將單字保存到各種顏色數組中。它們將被用來減少可能的結果。例如，綠色數組的最大長度是 5，因為它與答案一一匹配，所以如果綠色列表在索引 2 處有 **n**，那麼所有在索引 2 處不包含 **n** 的單字都可以被移除。
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-plugin-algorthm.png?raw=true" width="100%"/>
+![wordle-plugin-algorthm](https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-plugin-algorthm.png?raw=true)
 
 這個設計有很多問題，用戶需要點擊 **Next** 來更新結果。而且，用戶一個一個輸入也很麻煩。雖然我有一些想法來改進網站，但這仍然沒有意義，因為我的朋友永遠不會使用它。
 
@@ -49,13 +49,13 @@
 
 Wordle 將所有單字列表放入前端代碼中，我們可以輕鬆地檢查它並提取單字並導入到 **.js** 文件中。
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-words-place.png?raw=true" width="100%"/>
+![wordle-words-place](https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-words-place.png?raw=true)
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-words-import.png?raw=true" width="100%"/>
+![wordle-words-import](https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-words-import.png?raw=true)
 
 第一個挑戰來了，Wordle 使用 shadow DOM 來防止一些惡意的企鵝訪問其代碼。他們認為當選擇器不起作用時可以阻止我。
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-shadow-dom.png?raw=true" width="100%"/>
+![wordle-shadow-dom](https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-shadow-dom.png?raw=true)
 
 他們太天真了，憑藉企鵝和炸雞的力量，提取字母塊的過程很簡單。DOM 提供了 shadowRoot 來訪問 shadow DOM。
 
@@ -129,13 +129,13 @@ for (let i = 0; i < rows.length; i++) {
 
 一切運行順利。
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-extension-result.png?raw=true" width="100%"/>
+![wordle-extension-result](https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-extension-result.png?raw=true)
 
 **現在沒有人能阻止我了。**
 
 ~~但是谷歌可以~~
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-extension-giveup.png?raw=true" width="100%"/>
+![wordle-extension-giveup](https://github.com/SuicaDavid/BlogDraft/blob/master/Project/WordleExtension/wordle-extension-giveup.png?raw=true)
 
 我不想打開 Xcode 的原因之一是延長我的開發者許可證。~~並提供 WWDC 項目~~ 支付 5 英鎊來避免垃圾訊息真的很"令人畏懼"。
 
