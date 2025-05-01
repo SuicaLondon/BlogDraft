@@ -1,4 +1,4 @@
-# From AbortController to AbortSignal, I am pretending to read the source code of Chromium
+# From AbortController to AbortSignal, I pretended to read the source code of Chromium
 
 When I was young, I was thrilled to discover I could cancel HTTP requests using `cancelToken`. However, it took me a month to realize that this didn't actually help reduce server load. These days, developers are quite enthusiastic about `AbortController` and `AbortSignal`. Some influential developers discovered that `AbortController` could be used not just for cancelling `fetch` requests, but for nearly any event. Soon after, social media became filled with articles about `AbortController` - to the point where not writing about it seemed to suggest you weren't a proper frontend developer.
 
@@ -16,7 +16,7 @@ We normally want to cancel the request because we want to avoid the race conditi
 
 1. We want to send the same request A and B with 0.5 seconds interval.
 2. The request A took 1.5 second to complete, and the request B took 0.5 second to complete.
-3. The B response it returned before the request A, but it is obviously that B may have newer query parameters. 
+3. The B response it returned before the request A, but it is obviously that B may have newer query parameters.
 
 This is a very classical race condition problem, and you may think that you can solve it with adding request timestamp or adding the request ID. Yes, it is a good idea, but it is very overhead. If we are able to cancel the request, we can just ignore the response from the old request.
 
@@ -36,7 +36,7 @@ Before that, we need to know that how does the HTTP request work in the browser.
 3. TCP connection and send request
 4. Server receive and response
 
-I'm sure you've heard about these processes in a million times, but understanding them remains crucial. We need to distinguish between two scenarios: 
+I'm sure you've heard about these processes in a million times, but understanding them remains crucial. We need to distinguish between two scenarios:
 
 1. cancellation before the request is sent
 2. cancellation after it's sent. Logically

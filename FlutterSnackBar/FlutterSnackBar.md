@@ -105,7 +105,7 @@ Despite appearances, the problem persisted, as the animation and duration did no
 
 After 30 minutes of research, I identified the issue in the `showSnackBar` method's source code. It consistently generated a new `animationController` overriding any `controller` set in `SnackBar`.
 
-![Requirement](https://private-user-images.githubusercontent.com/66697085/297204460-b35d930c-58ab-43d0-9b28-a4b1477ce07a.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDYxNDE1ODMsIm5iZiI6MTcwNjE0MTI4MywicGF0aCI6Ii82NjY5NzA4NS8yOTcyMDQ0NjAtYjM1ZDkzMGMtNThhYi00M2QwLTliMjgtYTRiMTQ3N2NlMDdhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAxMjUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMTI1VDAwMDgwM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTYxNGJiMzI5N2UyMDhjNDRkMTI1OGQ3NDkzNjNlZGI4NzY1NjFiOTdjODJhMmIyYjgzZDUzOGE4MTkyNTljZWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.9XI6pTF8CvPE6siCmCWNlQ9TK67USzJelVeKiEjL-XM)
+![Requirement](https://github.com/SuicaLondon/BlogDraft/blob/master/FlutterSnackBar/297204460-b35d930c-58ab-43d0-9b28-a4b1477ce07a.png?raw=true)
 
 しまった
 
@@ -127,7 +127,7 @@ Implementing the layout for the fixed top `SnackBar` is relatively straightforwa
 
 Initially, I crafted a widget named `DrawerSnackBarContainer` and devised an animation controller to govern the entire animation logic. This container serves as a wrapper to manage the display and hide animation logic. Subsequently, I integrated a listener to track the animation `status`. I then registered the `controller` with a `Tween` within a SizeTransition to determine the height of the `SnackBar` content. (Note: The implementation of the built-in `SnackBar` was also modified to adjust its height with animation.)
 
-```Dart 
+```Dart
 _controller = widget.controller ??
      AnimationController(
        value: widget.initialValue,
@@ -208,7 +208,7 @@ assert(_currentMessage == null);
 // Display the SnackBar
 ```
 
-Everything is completed, and I've met the designer's requirements. No more overtime (BIG FLAG)! However, my frustration lingers regarding how the Flutter team organized the tickets. To channel this energy positively, I've decided to go above and beyond merely publishing my code on [***pub.dev***](pub.dev).
+Everything is completed, and I've met the designer's requirements. No more overtime (BIG FLAG)! However, my frustration lingers regarding how the Flutter team organized the tickets. To channel this energy positively, I've decided to go above and beyond merely publishing my code on [**_pub.dev_**](pub.dev).
 
 ## Publish my package
 
@@ -216,7 +216,7 @@ To achieve this, I need to strengthen and stabilize the code, enhance its readab
 
 ### Add more detail in pubspec.yaml
 
-To provide more detail for [***pub.dev***](pub.dev), it is essential to fill the information that other developers may need.
+To provide more detail for [**_pub.dev_**](pub.dev), it is essential to fill the information that other developers may need.
 
 ```yaml
 name: animated_fixed_snack_bar
@@ -233,6 +233,6 @@ For time's sake, I only added a simple version of [README](https://github.com/Su
 
 ### Folder structure and barrel export
 
-I performed a barrel export on the project to streamline the import section of the code. Following that, I declared the `library` name in the main export file within the *lib* folder. Subsequently, I relocated all the business code into the *src* folder, ensuring that the business code would not be exported directly.
+I performed a barrel export on the project to streamline the import section of the code. Following that, I declared the `library` name in the main export file within the _lib_ folder. Subsequently, I relocated all the business code into the _src_ folder, ensuring that the business code would not be exported directly.
 
-With a couple of build number increases the first was published! And this blog is finally completed by the end of the day. It is time to handle the next issue caused by the third-party library. DON'T RUN! [lint_staged](https://pub.dev/packages/lint_staged). I found your **** code that caused a memory leak!
+With a couple of build number increases the first was published! And this blog is finally completed by the end of the day. It is time to handle the next issue caused by the third-party library. DON'T RUN! [lint_staged](https://pub.dev/packages/lint_staged). I found your \*\*\*\* code that caused a memory leak!

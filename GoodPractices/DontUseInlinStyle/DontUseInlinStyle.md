@@ -1,4 +1,4 @@
-# Don't use inline style, please
+# Please don't use inline style
 
 An [article](https://danielnagy.me/posts/Post_tsr8q6sx37pl) about the inline style is faster than importing stylesheet and inline class was posted a couple of weeks ago. Many front-end developers were surprised about this and suggested that maybe we can compile styling methods like tailwind CSS into inline style in the future. I was also surprised that frameworks are so popular that people forgot the history of styling websites and how the browser renders the website.
 
