@@ -94,7 +94,7 @@ function App() {
 
 這段代碼是為了創建數千個計時器來佔用內存。當所有計時器完成後，loaded 的狀態將被改變以重新渲染頁面來使用內存。內存使用情況如下圖所示。
 
-<img src="https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Timer/memory.jpeg?raw=true" width="100%"/>
+![memory](https://github.com/SuicaDavid/BlogDraft/blob/master/BOM/Timer/memory.jpeg?raw=true)
 
 好的，至少在 Chrome 中，使用 **setTimeout** 時你不必釋放計時器。**_GC_** 足夠聰明來清除過期的計時器。Firefox 有相同的結果，而 Safari 的工具包在 loaded 改變時沒有顯示內存變化。也許下一篇博客會研究這個問題 (
 
