@@ -1,4 +1,4 @@
-# Flutter Web MediaQuery, what you should know
+# MediaQuery in Flutter, and everything I want to complain on flutter web
 
 Responsive design is always a nightmare for many frontend developers, particularly when developing applications without careful planning and design consideration. Poor responsive design choices can exponentially increase the complexity of debugging and testing processes.
 
@@ -48,7 +48,7 @@ Then what do we lose if we are using Flutter?
 
 And the last thing I wanted to mentioned is the responsive design on the Flutter Web.
 
-You may know that the traditional web development were using **CSS** to style the website, and the **CSS** rendering thread which is handled by the browser and isolated from the main thread. 
+You may know that the traditional web development were using **CSS** to style the website, and the **CSS** rendering thread which is handled by the browser and isolated from the main thread.
 
 Over time, developers sought more efficient solutions, leading to the evolution of **CSS** methodologies. This progression included **SCSS** for better code organisation, CSS-in-JS for component-scoped styling, and eventually Atomic CSS (Likes Tailwind) for optimised reusability - each addressing different challenges in web styling.
 
@@ -80,12 +80,12 @@ These feature is very useful in our daily development.
 
 ### Problem
 
- If you have experience of using it, you may notice that the widget that has `MediaQuery.of(context)` will be rebuilt when the viewport is changed.
+If you have experience of using it, you may notice that the widget that has `MediaQuery.of(context)` will be rebuilt when the viewport is changed.
 
- ```Dart
- // This will be called when the keyboard is showing or the app viewport is changing
- print(MediaQuery.of(context));
- ```
+```Dart
+// This will be called when the keyboard is showing or the app viewport is changing
+print(MediaQuery.of(context));
+```
 
 Let's has a look on source code. You can see that `MediaQuery` class is actually extending `InheritedWidget`. And as we all know, it means that `MediaQuery.of(context)` is strong binding the `context`.
 
@@ -102,7 +102,7 @@ class MediaQuery extends InheritedModel<_MediaQueryAspect> {
 
 You may notice a significant performance issue: Every widget that uses `MediaQuery` will be rebuilt whenever there's a change. Consider a stock trading application with 100 widgets receiving real-time WebSocket updates. If you attempt to type numbers to place a trade order, all widgets will rebuild simultaneously. This creates a severe performance bottleneck, particularly on mobile devices where resources are more constrained.
 
-Although Flutter styling is also running in the separated thread likes **CSS**, but there is one major difference: **CSS** won't affect the main tread until you call `matchMedia` manual or listen to it. 
+Although Flutter styling is also running in the separated thread likes **CSS**, but there is one major difference: **CSS** won't affect the main tread until you call `matchMedia` manual or listen to it.
 
 In Flutter, you have to always listen to the `MediaQuery` and rebuild the widgets that depend on it. Also, you are not only listen to one property, but all of the properties in the `MediaQueryData`
 
@@ -304,4 +304,3 @@ With these APIs, you can have more granular control over rendering by selecting 
 ## Conclusion
 
 In conclusion, while Flutter's `MediaQuery` provides essential functionality for responsive design, it comes with performance overhead that developers need to carefully manage. Although the latest did provide new APIs to make your life much easier, it still need the developer to consider architecture very careful. Also, the `MediaQuery` still could be a potential bottleneck of performance in some case, and you may need some extra measure to resolve it.
-
