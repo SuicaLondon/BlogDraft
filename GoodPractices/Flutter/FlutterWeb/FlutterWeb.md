@@ -45,9 +45,16 @@ I had heard countless times about Flutter's success, and I believed in it too, u
 
 ### Cross-platform development
 
-You have heard a lot of example of using Flutter on Mobile, some examples on Desktop, but it is pretty rare to hear some examples about Flutter Web.
+You have heard a lot of example of using Flutter on Mobile, some examples on Desktop, but it is pretty rare to hear some examples about Flutter Web. It is not hard to find out the reason.
 
-It is not hard to find out the reason. Let's list the platforms that Flutter supports: Android, iOS, macOS, Windows, Linux and Web.
+Let's list the platforms that Flutter supports:
+
+- Android
+- iOS
+- macOS
+- Windows
+- Linux
+- Web
 
 Even a monkey can understand that besides Web, all platforms are somehow "Native Apps" on the OS - they directly communicate with the OS.
 
@@ -77,7 +84,7 @@ To investigate this, I conducted benchmark tests with my basic model of M1 Pro M
 ![fibonacci-flutter-web](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-flutter-web.jpeg?raw=true)
 ![fibonacci-react](https://github.com/SuicaLondon/BlogDraft/blob/master/GoodPractices/Flutter/FlutterWeb/fibonacci-react.jpeg?raw=true)
 
-We can see that WASM did help the performance a lot in calculation performance.
+We can see that WASM did help the performance a lot in calculation performance. It has already assumed that the compiler will cheat for calculating Fibonacci.
 
 #### Rendering performance
 
@@ -117,6 +124,8 @@ There is another factor that is not the cause of this problem, but it is worth t
 
 > I will explain this in the later part of this article.
 
+## What will you lose if you choose Flutter Web
+
 ### Access to JavaScript's vast ecosystem - as we all know that new JavaScript libraries are published every minute.
 
 As we all know, JavaScript has the most popular and powerful ecosystem in the world. New JavaScript libraries are published every minute. For almost any development need, the JavaScript ecosystem offers multiple solutions.
@@ -127,9 +136,11 @@ For example, when building a commercial back-office application, a robust and pe
 
 ### Limited ability to implement web performance optimizations like static site generation, streaming, and server-side rendering.
 
-If you are not developing a backoffice application and want to build a user-facing application, you will need to be very careful about the bundle size and the performance of your application. As we all know, Flutter Web is extremely slow if you are not using WASM. What is the trade-off of using WASM? If you have some experience with C# Blazor, you may know that for all WASM applications, users need to download a WASM runtime environment (approximately 10MB) during their first visit to the website. This is a significant overhead for user-facing applications. Although the WASM runtime in Flutter Web starts from 1.1 MB, it is still a trade-off.
+If you are not developing a backoffice application and want to build a user-facing application, you will need to be very careful about the bundle size and the performance of your application. As we all know, Flutter Web is extremely slow on loading and rendering if you are not using WASM. What is the trade-off of using WASM? If you have some experience with C# Blazor, you may know that for all WASM applications, users need to download a WASM runtime environment (approximately 10MB) during their first visit to the website. This is a significant overhead for user-facing applications. Although the smallest WASM runtime in Flutter Web - skwasm only requires 1.1 MB, which seems quite compact compared to canvaskit's 1.5MB, and with the performance improvements brought by WASM, it may seem acceptable. However, when we compare it to React's gzip-compressed size of less than 50kb, this difference becomes very apparent.
 
-Furthermore, Flutter Web applications typically operate as single-page applications (SPAs) with limited server-side runtime control. This architecture restricts the implementation of crucial web performance optimizations like static site generation (SSG), server-side rendering (SSR), and streaming. While Flutter has made progress by implementing hot reload for web development, its integration with lazy loading remains immature. The API design for custom error pages and lazy-loaded content is very ugly and hard to use. Furthermore, Flutter Web WASM does not support the lazy loading or code splitting at all.
+> There are even more ridiculous issues like needing to import additional font packages to use colored emojis, which will be covered in a later article
+
+Although the Flutter team has finally made progress with hot reload this year, its integration with lazy loading remains immature. The API design for custom error pages and lazy-loaded content is ugly and difficult to use. Even more absurd is that Flutter Web WASM is so confident in its loading speed that it doesn't support lazy loading or code splitting at all.
 
 ```dart
 class MyApp extends StatelessWidget {
@@ -152,7 +163,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-If you have experience with Single Page Applications (SPAs) in React, you'll understand that lazy loading alone cannot fundamentally solve first screen loading issues as projects grow larger. The ultimate solution typically involves static site generation (SSG) or server-side rendering (SSR). However, since Flutter Web renders everything to canvas rather than generating HTML/DOM elements, implementing SSG or SSR becomes technically impossible. The server cannot pre-render content when there is no HTML markup to generate - everything is handled client-side through canvas rendering.
+Furthermore, Flutter Web applications typically operate as Single Page Applications (SPAs), with developers having very limited control over server-side runtime and no direct HTML rendering. This architecture completely restricts the implementation of key web performance optimizations like Static Site Generation (SSG), Server-Side Rendering (SSR), and streaming. If you have experience with Single Page Applications (SPAs) in React, you'll understand that lazy loading alone cannot fundamentally solve first screen loading issues as projects grow larger. The ultimate solution typically involves static site generation (SSG) or server-side rendering (SSR). However, since Flutter Web renders everything to canvas rather than generating HTML/DOM elements, implementing SSG or SSR becomes technically impossible. The server cannot pre-render content when there is no HTML markup to generate - everything is handled client-side through canvas rendering.
 
 ### Poor support for Search Engine Optimization (SEO), making it challenging to improve website visibility.
 
@@ -183,7 +194,7 @@ log('Hello, World!');
 console.log('Hello, World!');
 ```
 
-If you want to close the current window?
+If you want to close the current window? Please forget about your Flutter Mobile experience, because those methods are completely useless on Flutter Web.
 
 ```Dart
 import 'package:web/web.dart' show window;
@@ -222,7 +233,7 @@ if (style != null) {
 }
 ```
 
-> Also, who is the idiot who add the cache for the localStorage in [shared_preferences](https://pub.dev/packages/shared_preferences)? Don't you know the localStorage is synchronous?
+> Also, who is the idiot who add the cache for the localStorage in [shared_preferences](https://pub.dev/packages/shared_preferences)? Don't you know the localStorage is synchronous? 🤡
 
 ### Limited access to browser developer tools and Flutter development tools, reducing debugging capabilities.
 
@@ -230,9 +241,11 @@ Web developers are fortunate to have access to powerful browser DevTools that pr
 
 While Flutter does offer its own DevTools that work well for mobile development, many of these debugging features are not supported when developing for Flutter Web. This leaves developers with significantly reduced visibility and debugging capabilities compared to both traditional web development and Flutter mobile development.
 
+> Flutter Web even doesn't have render flame chart.
+
 ### The debugger, hot reload, and font rendering on Flutter Web are like a joke compared to Flutter on the mobile platform.
 
-As many Flutter developers know, Flutter has always had rendering issues on iOS - the letter spacing consistently differs from native iOS apps. While this was eventually fixed when the render engine was updated to the Impeller. This fix is not yet supported on Flutter Web. Flutter has made a [promise](https://docs.flutter.dev/perf/impeller#web) to update it, but without any timeline commitment.
+As many Flutter developers know, Flutter has always had rendering issues on Android and iOS. For example, the letter spacing consistently differs from native iOS apps. While this was eventually fixed when the render engine was updated to the Impeller. This fix is not yet supported on Flutter Web. Flutter has made a [promise](https://docs.flutter.dev/perf/impeller#web) to update it, but without any timeline commitment.
 
 Additionally, there was a longstanding issue on Flutter Mobile where certain font weights could only be rendered properly on iOS. Guess what? The Web also has similar problem and never been fixed. [issue](https://github.com/material-foundation/flutter-packages/issues/35). Can you believe that Flutter Web doesn't even render colored emojis by default? Why? Because to render emojis with color, [it needs to import a massive 24MB bundle.🤡](https://github.com/flutter/engine/pull/40990)
 
@@ -240,7 +253,7 @@ Additionally, there was a longstanding issue on Flutter Mobile where certain fon
 
 As a Flutter enthusiast, I can quickly develop high-performance mobile apps with Flutter. In one instance, I completed a complex cross-platform feature for both phone and tablet by myself, while a web team of 4 developers worked on the same feature for mobile and desktop web. I was even faster than them. Despite being more efficient in that case, I must acknowledge that many built-in widgets have significant design and implementation issues.
 
-For example, the `TextField` widget is a real pain point. The error text is baked right into the widget itself, which becomes a nightmare when you want to customize the border or align things properly. The `Row` and `Column` widgets are also insane, whoever thought it was a good idea to make `mainAxisSize` default to `max`, I am going to slash him? It's completely unintuitive and forces you to constantly write extra code to override it. I've gotten so fed up with this that I just wrap these widgets with my own versions that default to `min` instead. At least that saves me from the constant headache of overriding it everywhere.
+For example, the `TextFormField` widget is a real pain point. The error text is embedded into the widget itself, which becomes a nightmare when you want to customize the border or align things properly. The `Row` and `Column` widgets are also insane, whoever thought it was a good idea to make `mainAxisSize` default to `max`, I am going to slash him? It's completely unintuitive and forces you to constantly write extra code to override it. I've gotten so fed up with this that I just wrap these widgets with my own versions that default to `min` instead. At least that saves me from the constant headache of overriding it everywhere.
 
 ```dart
 class CustomRow extends StatelessWidget {
@@ -290,11 +303,11 @@ It is a common sense in the computer science world, if you have another layer, y
 
 When using context to access state from state management libraries, it's still reasonably straightforward - similar to how class-based web frameworks handle component `this` with context. Developers just need to understand where the context come from and can use a `Builder` widget when needed.
 
-However, things get significantly more abstract with Go Router's `ShellRoute`. Since `Context` is also responsible for managing widget positioning and dimensions, you're limited to accessing only the context of the current shell route. While Flutter provides widgets like `CompositedTransformFollower` and `CompositedTransformTarget` to help in some cases, you frequently end up having to store the ancestor widget's context using GlobalKeys in global variables just to access it from within the current shell route. This makes it extremely difficult to maintain widget isolation and breaks proper encapsulation principles.
+However, things get significantly more abstract with Go Router's `ShellRoute`. Since `Context` is also responsible for managing widget positioning and dimensions, you're limited to accessing only the context of the current shell route, it made difficulty to get the correct context you want. While Flutter provides widgets like `CompositedTransformFollower` and `CompositedTransformTarget` to help in some cases, you frequently end up having to store the ancestor widget's context using GlobalKeys in global variables just to access it from within the current shell route. This makes it extremely difficult to maintain widget isolation and breaks proper encapsulation principles.
 
 ### Users need to download a WebAssembly (WASM) runtime environment, and WASM is not well supported in the current version.
 
-As of 2024, the WASM runtime in Flutter Web still lacks robust support. The WASM runtime starts from 1.1 MB, which is not a small size for web applications. Although it is relatively small compared to the 24 MB colorful emojis bundle.
+As of 2024, WASM runtime support in Flutter Web remains weak. The initial size of the WASM runtime is 1.1 MB, which is a significant burden for web applications, although reasonable compared to the 24 MB colored emoji package. Additionally, Flutter Web's Hot Reload feature only started being supported this year and has numerous bugs in the WASM environment. More concerning is that many of Flutter Web's original features do not work properly in the WASM environment.
 
 ### Most third-party libraries are also mobile-focused and some of them are not WASM ready.
 
