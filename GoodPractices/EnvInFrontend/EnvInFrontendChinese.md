@@ -2,7 +2,7 @@
 
 其實我一直都有點不太想碰這個話題，因為這個問題太基礎又有點太廣了，我一直沒有自信能講好這個話題，不過因為一些眾所週知的事情，我覺得還是至少分享下我的一些觀點，以及跟朋友們討論之後的一些心得。
 
-無論前後端，環境變數(Environment Variable)都是一個非常重要的概念，他可以用來給你的程式提供一些 context，比如說你正在開發的環境還是生產環境，或者說你正在開發的環境是本地還是遠端，或者說你正在部署的後端 URL，一些 SASS 的 key，這些都是環境變數可以幫助你解決的問題。然後這個問題難講的關鍵在於，這個問題難講的關鍵在於，不同的 project 可能有不同的 the best practice，甚至有可能不存在 the best practice，我親眼見過兩個 Senior Frontend Developer 因為這個問題吵起來。而且還有一點，你必須要深刻理解這個 project ，才能夠知道什麼是合適的 practice。
+無論前後端，環境變數(環境變量，Environment Variable)都是一個非常重要的概念，他可以用來給你的程式提供一些 context，比如說你正在開發的環境還是生產環境，或者說你正在開發的環境是本地還是遠端，或者說你正在部署的後端 URL，一些 SASS 的 key，這些都是環境變數可以幫助你解決的問題。然後這個問題難講的關鍵在於，這個問題難講的關鍵在於，不同的 project 可能有不同的 the best practice，甚至有可能不存在 the best practice，我親眼見過兩個 Senior Frontend Developer 因為這個問題吵起來。而且還有一點，你必須要深刻理解這個 project ，才能夠知道什麼是合適的 practice。
 
 ## 一些基礎知識
 
@@ -103,14 +103,57 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 ## 為什麼不存在 The best practice
 
-我其實一直很反感 the best practice 這個詞，因為這個詞背後隱含的意義是：存在一個唯一正確的答案。工程師們對於一個領域的理解是螺旋上升的，每年你的領域都可能會有不同的 META
+我其實一直很反感 the best practice 這個詞，因為這個詞背後隱含的意義是：存在一個唯一正確的答案。工程師們對於一個領域的理解是螺旋上升的，每年你的領域都可能會有不同的 META. 今年因為現有技術得出的最佳實踐，明年新的技術出來可能你的方案就過時了。因此我一直會使用 Good practice 來代替 the best practice，只要能解決問題的 practice 就是好的 practice。
 
 ![Perfect Solution](./perfect-solution.png)
 
-### Micro Frontend
+然後在環境變數的處理在面對不同的需求，也會需要面對不同的問題，我這裡舉幾個例子
 
-### 你不想切換環境的時候需要重新 build 你的 project，而是 build one deploy everywhere
+1. Micro Frontend
 
-### 如果你想要動態改變環境變數，你是否能容忍異步訪問？
+在微前端架構中，你面對的主要問題將會是怎麼管理不同子應用之間的環境變數同步，繼承和覆蓋。稍微思考一下加減一個環境變數要對 CI/CD 進行的改動，估計沒有人不會頭疼，然後稍微不注意，某些地方就忘記配置可能就傳了一個空變數進 App，因此你可能需要引入額外的庫來幫助你管理這些環境變數，同時你也需要考慮忘記同步的風險，從而對獲取的環境變數進行額外的驗證。
+
+2. 當你不想切換環境的時候需要重新 build 你的 project，而是 build one deploy everywhere
+
+如果你有移動端開發的經驗，那麼你就會對這個 practice 感到非常熟悉，為了避免頻繁 build 的耗時，直接把某幾個環境的環境變數打包到你的 app 裡面，從而讓 App 獲得動態切換環境的能力。通常是在登錄頁面提供一個環境變量，然後在測試的時候可以在登錄頁面選擇登錄哪一個環境。這種情況你可能就會直接把部分環境變數直接 hardcode 到你的 app 裡面或者同時 import 多個.env 檔案。
+
+3. 如果你同時有多個後端 domain，你需要動態切換後端的 domain
+
+先說明我當然是知道 CDN，不過如果在亞洲工作過的估計都知道在某些產業會採取這種措施來減少某些風險，然後這個方案其實在歐美同樣的行業也非常常見，甚至某些熱門行業直接有個一整個標準就是基於這個方案。在這種情況下，你的環境變數很大一部分都會由某個後端 APIs 來分發。然後關於 App 的一些 configuration，你也可以完全交由後端來管理，比如說 App 的一些 Theme，或者 White label 之類的配置。
 
 ## 倫敦鵝的建議
+
+說了一大段廢話我相信不同再多說解釋不同需求下有不同的 solution 了。我接下來打算總結一下我的一些觀點，以及我的一些做法。
+
+### 讓你的 App 的環境變數管理一開始盡可能簡單
+
+你沒辦法保證你的 PM 們腦迴路正常，你也沒辦法控制整個 project 的發展路線，因此你必須要讓你的 project 的環境變數管理一開始就盡可能簡單，從而讓你後續的改動的成本盡可能低。
+
+### 讓你環境變數變成真正的 constant
+
+雖然眾所週知, JavaScript 的 const 是假的，你還是被允許修改 constant 裡面 reference 的值，不過在 TypeScript 裡面一些 feature 可以幫我們一定程度上解決這個問題。
+
+```TypeScript
+// env.ts
+const env = {
+  API_URL: process.env.API_URL,
+} as const
+```
+
+我們可以通過`as const`來強制讓裡面的 properties 全都變成 readonly，從而讓你無法修改裡面的值。
+
+### 把你的 server 環境變量和 client 環境變量分開寫，然後用你的 Eslint 狠狠限制 client component 不能 import server env
+
+```TypeScript
+// env.client.ts
+const clientEnv = {
+  API_URL: process.env.API_URL,
+} as const
+```
+
+```TypeScript
+// env.server.ts
+const serverEnv = {
+  SECRET_KEY: process.env.SECRET_KEY,
+} as const
+```
