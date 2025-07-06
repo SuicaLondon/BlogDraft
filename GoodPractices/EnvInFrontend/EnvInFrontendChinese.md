@@ -206,4 +206,29 @@ const env = envSchema.parse({
 
 ### 如果你只有非 secret 環境變數，那麼可以考慮給你的環境變數設置一個 default value
 
-我們終於要來說這一個大爭議點了，然後這也是第一個點`盡可能簡單`的 callback。
+我們終於要來說這一個大爭議點了，然後這也是第一個點`盡可能簡單`的 callback。儘管前端遠不需要像後端一樣管理非常多的環境變數，但是對於環境的管理這一點是共通的。首先我們先定義一個共識。
+
+我們現在先假設後端一共有四個環境，分別是`development`, `qa`, `uat`, `production`。然後前端也需要準備同樣的四個環境，分別是`development`, `qa`, `uat`, `production`。
+
+也就是我們會有四個`.env`檔案，再加上如果你的前後端是分開的，你有時候還需要在本地跑起這個後端 project，你還需要一個`.env.local`檔案。
+
+```
+.env.development
+.env.qa
+.env.uat
+.env.production
+.env.local
+.env.example
+```
+
+前端因為工具太多太雜的關係，root level 下會有很多亂七八糟的 config files，我之前工作過的一家公司公司的一個 project 在 project root 下跑`ls -1 | wc -l`差一點就輸出了三位數。
+
+> 這也是其中一個原因為什麼前端都喜歡把 source code 全部塞到某個 folder 裡面，從而與配置隔離
+
+而隨著環境增加的`.env`檔案自然會加劇這個現象，並且更多的環境變量也會增加你在`package.json`裡面要寫的`scripts` alias 的數量。於此同時，你在本地開發的時候，99%的情況都只會碰`.env.local`，`.env.development`和`.env.qa`這三個檔案，其中`.env.local`更是完全不會上 CI/CD，因此`.env.local`似乎出現了一些存在主義危機。
+
+我待過的幾乎每個團隊或多或少都遇到過這樣的一個問題，並且有產生了不同的解決方案：
+
+1. 直接刪除`.env.local`然後在本地開發的時候直接使用`.env.example`，並且`.env.example`會被上傳到 Git.
+
+2. 直接刪除整個`.env.local`，然後在代碼裡面把 local variables 作為 default value
