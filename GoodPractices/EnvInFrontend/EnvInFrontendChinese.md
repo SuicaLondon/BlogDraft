@@ -103,7 +103,7 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 ## 為什麼不存在 The best practice
 
-我其實一直很反感 the best practice 這個詞，因為這個詞背後隱含的意義是：存在一個唯一正確的答案。工程師們對於一個領域的理解是螺旋上升的，每年你的領域都可能會有不同的 META. 今年因為現有技術得出的最佳實踐，明年新的技術出來可能你的方案就過時了。因此我一直會使用 Good practice 來代替 the best practice，只要能解決問題的 practice 就是好的 practice。
+我其實一直很反感 the best practice 這個詞，因為這個詞背後隱含的意義是：存在一個唯一且正確的答案。工程師們對於任何一個領域的理解是螺旋上升的，每年你的領域都可能會有不同的`META`. 今年因為現有技術得出的最佳實踐，明年新的技術出來可能你的方案就過時了。因此我一直會使用 Good practice 來代替 the best practice，只要能解決問題的 practice 就是好的 practice。
 
 ![Perfect Solution](./perfect-solution.png)
 
@@ -111,15 +111,15 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 1. Micro Frontend
 
-在微前端架構中，你面對的主要問題將會是怎麼管理不同子應用之間的環境變數同步，繼承和覆蓋。稍微思考一下加減一個環境變數要對 CI/CD 進行的改動，估計沒有人不會頭疼，然後稍微不注意，某些地方就忘記配置可能就傳了一個空變數進 App，因此你可能需要引入額外的庫來幫助你管理這些環境變數，同時你也需要考慮忘記同步的風險，從而對獲取的環境變數進行額外的驗證。
+在微前端架構中，你面對的主要問題將會是怎麼管理不同子應用之間的環境變數同步，繼承和覆蓋。稍微思考一下加減一個環境變數要對 CI/CD 進行的改動，估計沒有人不會頭疼，然後稍微不注意，某些地方就忘記配置可能就傳了一個空變數進 App，因此你可能需要引入額外的庫來幫助你管理這些環境變數，同時你也需要考慮忘記同步的風險，從而對獲取的環境變數進行額外的驗證可以說成為了必須。
 
 2. 當你不想切換環境的時候需要重新 build 你的 project，而是 build one deploy everywhere
 
-如果你有移動端開發的經驗，那麼你就會對這個 practice 感到非常熟悉，為了避免頻繁 build 的耗時，直接把某幾個環境的環境變數打包到你的 app 裡面，從而讓 App 獲得動態切換環境的能力。通常是在登錄頁面提供一個環境變量，然後在測試的時候可以在登錄頁面選擇登錄哪一個環境。這種情況你可能就會直接把部分環境變數直接 hardcode 到你的 app 裡面或者同時 import 多個.env 檔案。
+如果你有移動端開發的經驗，那麼你就會對這感到非常熟悉，為了避免頻繁 build 的耗時，直接把某幾個環境的環境變數打包到你的 App 裡面，從而讓 App 獲得動態切換環境的能力。通常是在登錄頁面提供一個環境變量，然後在測試的時候可以在登錄頁面選擇登錄哪一個環境。這種情況你可能就會直接把部分環境變數直接 hardcode 到你的 app 裡面或者同時 import 多個.env 檔案。
 
 3. 如果你同時有多個後端 domain，你需要動態切換後端的 domain
 
-先說明我當然是知道 CDN，不過如果在亞洲工作過的估計都知道在某些產業會採取這種措施來減少某些風險，然後這個方案其實在歐美同樣的行業也非常常見，甚至某些熱門行業直接有個一整個標準就是基於這個方案。在這種情況下，你的環境變數很大一部分都會由某個後端 APIs 來分發。然後關於 App 的一些 configuration，你也可以完全交由後端來管理，比如說 App 的一些 Theme，或者 White label 之類的配置。
+先說明我當然是知道 CDN，不過如果在亞洲工作過的估計都知道在某些行業會採取這種措施來減少某些風險，然後這個方案其實在歐美同樣的行業也非常常見，甚至某些熱門行業直接有個一整個標準就是基於這個方案。在這種情況下，你的環境變數很大一部分都會由某個後端 APIs 來分發。然後關於 App 的一些 configuration，你也可以完全交由後端來管理，比如說 App 的一些 Theme，或者 White label 之類的配置。
 
 ## 倫敦鵝的建議
 
@@ -144,10 +144,12 @@ const env = {
 
 ### 把你的 server 環境變量和 client 環境變量分開寫，然後用你的 Eslint 狠狠限制 client component 不能 import server env
 
+雖然 Next.js 默認只有`NEXT_PUBLIC_`開頭的環境變數會被暴露到 client 端，但是我還是會推薦無論你在任何情況都把分開存放，並且你最好做好防護，配置好合適的 Eslint 規則。
+
 ```TypeScript
 // env.client.ts
 const clientEnv = {
-  API_URL: process.env.API_URL,
+  API_URL: process.env.NEXT_PUBLIC_API_URL,
 } as const
 ```
 
@@ -157,3 +159,76 @@ const serverEnv = {
   SECRET_KEY: process.env.SECRET_KEY,
 } as const
 ```
+
+然後這裡還有一個傳說級別大坑，我覺得有必要提一下
+
+#### 前端神奇的環境變數緩存
+
+如果你經常碰一些前端的 infra，你估計會笑出聲，無論你是用`Vite`還是`Next.js`，你時不時都會遇到這樣的問題，你修改的環境變數，但是無論怎麼重啟 server 或者清空 project 裡面的`build/.next` 和 `node_modules`，你都會發現你的環境變數沒有變化，依舊只能獲取到舊的值。而且這個問題發病症狀還有所不同，有些人重新 clone project 就解決了，有些什麼都不做第二天自己就好了。很慚愧這個問題我也沒有找到一個完美的解決方案，也是只能和大家一樣一步步嘗試。
+
+#### 如果你需要驗證環境變數的話，請優先使用你正在使用的 framework 的驗證方式
+
+沒有人會反對環境變數需要被驗證，這一切都是要到你真的有這個需求的情況下。如果你剛開始一個 project, 只有一個`API_URL`一個環境變數，然後這個 URL 基本不可能變化，那麼你真的有必要為了這一個環境變數從一開始就引入全套驗證邏輯嗎？說句不好聽的，如果真的因為只有一個`API_URL`環境變數的情況下，你的代碼能上 production 然後在 production 因為忘記傳環境變數掛掉，最應該檢討的是整個開發流程或者 CI/CD 而不是代碼。等你的環境變數多了起來，CI/CD 越來越複雜，同事數量也變多起來，這個時候管理環境變數才會真正變成一個問題，你應該花時間去思考如何管理他。
+
+我個人是非常反對前端引入像是[Envalid](https://www.npmjs.com/package/envalid)這種庫，因為這個庫的設計初衷只是為了做驗證環境變數。雖然對於一個庫來說，專注於一個事情是好事，但是對前端這種沒 1kb 的 bundle size 都很重要的領域來說，這個庫的 CP 值似乎有點太低了。我不否認在一些後端 Node.js 場景，這個庫的確有他的價值，但是對於大部分前端場景來說，導入這個庫恐怕真的不如你手寫驗證 function 有 CP 值。
+
+要特別感謝`Bryan Lee`大大的建議，我們應該用一些更優雅的方式驗證環境變數。尤其是在你已經用了`zod`或者餓`yup`這種驗證庫的情況下，你完全可以直接用他們的 API 來驗證環境變數。
+
+```TypeScript
+import { z } from 'zod'
+
+const envSchema = z.object({
+  API_URL: z.string().url(),
+})
+
+const env = envSchema.parse(process.env)
+```
+
+然後你也可以使用更多的`zod`的 API 來進行額外的驗證，你是自由的。
+
+![freedom](./freedom.png)
+
+不過這種方式在`Next.js`裡面有另一個傳說級別大坑：你沒辦法動態從`process.env`裡面獲取變數
+
+參考這個[回答](https://stackoverflow.com/a/66626413)，這又是一個 Next.js 的黑魔法，如果你不在 build time 就獲取環境變數，發現最後`process.env`會被替換成`{}`。所以你必須要在 build time 就把環境變量取出來。
+
+```TypeScript
+import { z } from 'zod'
+
+const envSchema = z.object({
+  API_URL: z.string().url(),
+})
+
+const env = envSchema.parse({
+  API_URL: process.env.NEXT_PUBLIC_API_URL,
+})
+```
+
+### 如果你只有非 secret 環境變數，那麼可以考慮給你的環境變數設置一個 default value
+
+我們終於要來說這一個大爭議點了，然後這也是第一個點`盡可能簡單`的 callback。儘管前端遠不需要像後端一樣管理非常多的環境變數，但是對於環境的管理這一點是共通的。首先我們先定義一個共識。
+
+我們現在先假設後端一共有四個環境，分別是`development`, `qa`, `uat`, `production`。然後前端也需要準備同樣的四個環境，分別是`development`, `qa`, `uat`, `production`。
+
+也就是我們會有四個`.env`檔案，再加上如果你的前後端是分開的，你有時候還需要在本地跑起這個後端 project，你還需要一個`.env.local`檔案。
+
+```
+.env.development
+.env.qa
+.env.uat
+.env.production
+.env.local
+.env.example
+```
+
+前端因為工具太多太雜的關係，root level 下會有很多亂七八糟的 config files，我之前工作過的一家公司公司的一個 project 在 project root 下跑`ls -1 | wc -l`差一點就輸出了三位數。
+
+> 這也是其中一個原因為什麼前端都喜歡把 source code 全部塞到某個 folder 裡面，從而與配置隔離
+
+而隨著環境增加的`.env`檔案自然會加劇這個現象，並且更多的環境變量也會增加你在`package.json`裡面要寫的`scripts` alias 的數量。於此同時，你在本地開發的時候，99%的情況都只會碰`.env.local`，`.env.development`和`.env.qa`這三個檔案，其中`.env.local`更是完全不會上 CI/CD，因此`.env.local`似乎出現了一些存在主義危機。
+
+我待過的幾乎每個團隊或多或少都遇到過這樣的一個問題，並且有產生了不同的解決方案：
+
+1. 直接刪除`.env.local`然後在本地開發的時候直接使用`.env.example`，並且`.env.example`會被上傳到 Git.
+
+2. 直接刪除整個`.env.local`，然後在代碼裡面把 local variables 作為 default value
