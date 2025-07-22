@@ -56,7 +56,8 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 .env.local
 ```
 
-同時，我們一般還會維護一個叫.env.example 的檔案，這個檔案作為一個文檔會包含所有可能的環境變數，從而讓開發者可以方便地知道哪些環境變數是可用的，以及他們的用途。
+同時，我們一般還會維護一個叫.env.example 的檔案，這個檔案作為一個文檔會包含所有可能
+的環境變數，從而讓開發者可以方便地知道哪些環境變數是可用的，以及他們的用途。
 
 ### 環境變數的種類
 
@@ -232,3 +233,45 @@ const env = envSchema.parse({
 1. 直接刪除`.env.local`然後在本地開發的時候直接使用`.env.example`，並且`.env.example`會被上傳到 Git.
 
 2. 直接刪除整個`.env.local`，然後在代碼裡面把 local variables 作為 default value
+
+然後我這裡要推的就是第二種方案的變種，我們根本不需要額外維護一個`.env.local`，在一開始直接不考慮`.env.local`，直接把這些 variable 作為 default value 寫在代碼裡面。
+
+```TypeScript
+// env.ts
+const env = {
+  API_URL: process.env.API_URL || 'http://localhost:3000',
+} as const
+```
+
+這樣做的好處是，你最開始保證了你的環境變數盡可能簡單，你不用再維護一個額外的環境，尤其是你根本沒有這麼多環境變數的情況下，然後因為你保證了配置的盡可能簡單，之後如果有額外的需求，你也可以盡可能簡單的修改你的代碼。
+
+如果你要在本地開發的時候使用本地的後端, 你只要跑直接跑`pnpm run dev`，然後因為你有設置`dotenv -e .env.development`，所以你只會讀到`.env.development`的值。
+
+> 這裡用`dotenv-cli`做示例，你也可以用別的 library。
+
+```bash
+dotenv -e .env.development vite
+```
+
+你也可以給每個環境都加上 alias
+
+```json
+"scripts": {
+  "dev": "dotenv -e .env.empty vite",
+  "dev:dev": "dotenv -e .env.development vite",
+  "dev:qa": "dotenv -e .env.qa vite",
+  "dev:uat": "dotenv -e .env.uat vite",
+  "dev:production": "dotenv -e .env.production vite"
+}
+```
+
+#### 為什麼要給每個環境指定`dotenv -e .env.[ENV]`?
+
+無論是 Vite 還是 Webpack，在跑最普通的`pnpm run dev`的時候，讀取`.env`檔案都有一個 fallback 機制。
+
+1. .env.{NODE_ENV}.local
+2. .env.local
+3. .env.{NODE_ENV}
+4. .env
+
+也就是說如果讀不到`.env.{ENV}.local`，就會讀取`.env.local`，然後一直往下找，直到讀到`.env`。這整個機制是有點反直覺的，尤其是`.env.local`的優先級處於`.env.{ENV}`和`.env.{ENV}.local`之間，我思考了五年了，都沒有想明白這個優先級為什麼是先 local 後 env。這都不重要，重點是這個 fallback 環境管理變得特別複雜，於此同時，整個 fallback 是基於`NODE_ENV`，正如前文所說，這不符合我們的開發習慣。
