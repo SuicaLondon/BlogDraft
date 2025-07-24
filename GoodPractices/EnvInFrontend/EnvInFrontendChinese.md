@@ -274,4 +274,6 @@ dotenv -e .env.development vite
 3. .env.{NODE_ENV}
 4. .env
 
-也就是說如果讀不到`.env.{ENV}.local`，就會讀取`.env.local`，然後一直往下找，直到讀到`.env`。這整個機制是有點反直覺的，尤其是`.env.local`的優先級處於`.env.{ENV}`和`.env.{ENV}.local`之間，我思考了五年了，都沒有想明白這個優先級為什麼是先 local 後 env。這都不重要，重點是這個 fallback 環境管理變得特別複雜，於此同時，整個 fallback 是基於`NODE_ENV`，正如前文所說，這不符合我們的開發習慣。
+也就是說如果讀不到`.env.{ENV}.local`，就會讀取`.env.local`，然後一直往下找，直到讀到`.env`。這整個機制是有點反直覺的，尤其是`.env.local`的優先級處於`.env.{ENV}`和`.env.{ENV}.local`之間，我思考了五年了，都沒有想明白這個優先級為什麼是先 local 後 env。這都不重要，重點是這個 fallback 環境管理變得特別複雜，於此同時，整個 fallback 是基於`NODE_ENV`，正如前文所說，這不符合我們的開發習慣，同時這種類似 Implicit Type Conversion 的行為會增加案子上手的心智負擔。
+
+我特地問了身邊的前端工程師朋友，沒有一個人知道/記得這個 fallback 優先級，然後開了一個投票
