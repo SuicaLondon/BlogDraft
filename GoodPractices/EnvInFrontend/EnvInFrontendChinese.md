@@ -109,7 +109,7 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 我其實一直很反感 the best practice 這個詞，因為這個詞背後隱含的意義是：存在一個唯一且正確的答案。工程師們對於任何一個領域的理解是螺旋上升的，每年你的領域都可能會有不同的`META`. 今年因為現有技術得出的最佳實踐，明年新的技術出來可能你的方案就過時了。因此我一直會使用 Good practice 來代替 the best practice，只要能解決問題的 practice 就是好的 practice。
 
-![Perfect Solution](./perfect-solution.png)
+![Perfect Solution](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/master/GoodPractices/EnvInFrontend/perfect-solution.png)
 
 然後在環境變數的處理在面對不同的需求，也會需要面對不同的問題，我這裡舉幾個例子
 
@@ -195,7 +195,7 @@ const env = envSchema.parse(process.env)
 
 然後你也可以使用更多的`zod`的 API 來進行額外的驗證，你是自由的。
 
-![freedom](./freedom.png)
+![freedom](https://github.com/SuicaLondon/BlogDraft/raw/master/GoodPractices/EnvInFrontend/freedom.png)
 
 不過這種方式在`Next.js`裡面有另一個傳說級別大坑：你沒辦法動態從`process.env`裡面獲取變數
 
@@ -333,7 +333,7 @@ execSync("next dev", { stdio: "inherit" });
 
 我特地問了身邊的前端工程師朋友，沒有一個人知道/記得這個 fallback 優先級，然後我在 Twitter 上開了一個投票，結果如下：
 
-![Twitter Poll Result](./vote.jpeg)
+![Twitter Poll Result](https://github.com/SuicaLondon/BlogDraft/raw/master/GoodPractices/EnvInFrontend/vote.jpeg)
 
 49 人中有 67% 的人不知道這個優先級，因此我覺得這可以算作一個大部分前端工程師都不知道的暗坑，所以我覺得我們應該想辦法迴避這個 conversion。
 
