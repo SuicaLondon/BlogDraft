@@ -44,9 +44,9 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 通常我們還會有
 
 ```
-# dev mode/測試環境，然後你也可以按你的需求來決定怎麼處理qa環境
+# dev mode/測試環境
 .env.development
-# 生產環境/正式環境
+# production mode/生產環境/正式環境
 .env.production
 # 測試環境
 .env.test
@@ -76,7 +76,7 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 ### 前端和後端對於環境變數處理的區別
 
-這是一個非常簡單的邏輯，但凡你有一點全棧經驗，你都會知道前端和後端完全是兩個完全不同的世界，從關注的點到思考的邏輯都完全不同，妄圖用一套方案解決兩個完全不同的問題，只會讓你陷入無盡的痛苦。
+只要你有一點全棧經驗，你都會知道前端和後端完全是兩個完全不同的世界，從關注的點到思考的邏輯都完全不同，妄圖用一套方案解決兩個完全不同的問題，只會讓你陷入無盡的痛苦。
 
 我這裡只舉兩個例子
 
@@ -89,7 +89,7 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 > 後端怎麼管理 secret 不在本文討論範圍 😈 我就不寫了 你們愛用什麼 secret management 就用哪家
 
-然後隨著你的後端代碼增長，或者你接入更多的第三方 APIs，你的.env 檔案必然會越來越大，最後你會發現你的.env 檔案變得非常難以管理，於此同時前端的.env 檔案就跟我的錢包一樣空空如也。甚至有些前端架構直接完全不用.env 了。
+然後隨著你的後端代碼增長，或者你接入更多的第三方 APIs，你的`.env` 檔案必然會越來越大，最後你會發現你的`.env` 檔案變得非常難以管理，於此同時前端的`.env` 檔案就跟我的錢包一樣空空如也。甚至有些前端架構直接完全不用`.env` 了。
 
 > 有個反例是，如果你在用 Flutter，或者進行 App 開發，你是會需要管理一些非環境變數 secret 的，比如說 keystore，不過本文前端只指那種會跑在瀏覽器上的 😡。 誰提 Flutter Web 就丟進泰晤士河喂鰻魚。
 
@@ -135,7 +135,7 @@ const apiUrl = process.env.API_URL || 'http://localhost:8000'
 
 其次，`.env` 檔案這種東西，只在你本地跑 `npm run dev` 的時候有意義。一旦上了 Cloud ，環境變數都是別的系統幫你注進去的，根本不會去讀你那些 .env.prod 或 .env.qa。所以真的別浪費太多時間糾結要拆幾個 `.env`，一開始把事情弄簡單，之後才好改。
 
-> 倫敦鵝的暴論：一個能在公司配的文書筆電上用 Docker Compose 跑起來的 full stack 專案，真的就別當自己大 Project。
+> 倫敦鵝的暴論：一個能在公司配的文書筆電上用 _Docker Compose_ 跑起來的 full stack 專案，真的就別當自己大 Project。
 
 ### 讓你環境變數變成真正的 constant
 
@@ -258,7 +258,7 @@ const env = envSchema.parse({
 
 2. 直接刪除整個`.env.local`，然後在代碼裡面把 local variables 作為 default value
 
-然後我這裡要推的就是第二種方案的變種，與其另外維護 .env.local，不如一開始就把這些變數的預設值寫在程式碼裡，讓專案更簡潔易懂。
+然後我這裡要推的就是第二種方案的變種，與其另外維護 `.env.local`，不如一開始就把這些變數的預設值寫在程式碼裡，讓專案更簡潔易懂。
 
 ```TypeScript
 // env.ts
