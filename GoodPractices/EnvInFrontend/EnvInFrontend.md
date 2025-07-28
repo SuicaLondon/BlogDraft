@@ -112,7 +112,7 @@ Therefore, JavaScript has a special environment variable `NODE_ENV`, which is se
 
 I've actually always been averse to the term "best practice" because it implies there's a unique and correct answer. Engineers' understanding of any field spirals upward, and each year your field might have different `META`. This year's best practice derived from existing technology might become outdated next year when new technology emerges. Therefore, I always use "good practice" instead of "best practice" - any practice that solves problems is a good practice.
 
-![Perfect Solution](./perfect-solution.png)
+![Perfect Solution](https://github.com/SuicaLondon/BlogDraft/raw/master/GoodPractices/EnvInFrontend/perfect-solution.png)
 
 Handling environment variables faces different problems when dealing with different requirements. Here are a few examples:
 
@@ -198,7 +198,7 @@ const env = envSchema.parse(process.env)
 
 You can also use more `zod` APIs for additional validation - you're free to do so.
 
-![freedom](./freedom.png)
+![freedom](https://github.com/SuicaLondon/BlogDraft/raw/master/GoodPractices/EnvInFrontend/freedom.png)
 
 However, this approach has another legendary-level pitfall in `Next.js`: you can't dynamically get variables from `process.env`
 
@@ -336,7 +336,7 @@ execSync("next dev", { stdio: "inherit" });
 
 I specifically asked frontend engineer friends around me - not one person knows/remembers this fallback priority. I opened a poll on Twitter with the following results:
 
-![Twitter Poll Result](./vote.jpeg)
+![Twitter Poll Result](https://github.com/SuicaLondon/BlogDraft/raw/master/GoodPractices/EnvInFrontend/vote.jpeg)
 
 67% of 49 people didn't know this priority, so I think this can be considered a pitfall most frontend engineers don't know about. Therefore, I think we should find ways to avoid this conversion.
 
