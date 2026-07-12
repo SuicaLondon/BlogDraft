@@ -1,6 +1,6 @@
 # 2026 年，我對 AI 熱潮的一些不適感
 
-![Who is JSON](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/feat/thoughts-on-ai-2026/AI/ThoughtsOnAI2026/who-is-json.jpg)
+![Who is JSON](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/main/AI/ThoughtsOnAI2026/who-is-json.jpg)
 
 我先戴返個頭盔，我完全沒有在反對使用 AI。事實上，我每天都在高強度使用 AI，甚至可以做到不到下午 2 點就用光 ChatGPT Pro Max 訂閱的兩個 5 小時 limits。我非常認同AI已經徹底改變了我們的生活和工作方式。
 
@@ -24,7 +24,7 @@ AI 的發展已經快到你無法預測半年以後它會變成什麼樣，但�
 
 這件事本身並不奇怪。
 
-![Token tradeoff](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/feat/thoughts-on-ai-2026/AI/ThoughtsOnAI2026/token-tradeoff.png)
+![Token tradeoff](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/main/AI/ThoughtsOnAI2026/token-tradeoff.png)
 
 員工對 AI 的態度，並不是單純的「擁抱工具」或「抗拒工具」。
 
@@ -155,7 +155,7 @@ AI 可以模仿風格，可以拼接語料，可以生成非常像那麼回事�
 
 這裡我想引用一拳超人的作者 ONE 借金屬騎士表達對 AI 的看法：
 
-![Metal Knight on AI and creativity](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/feat/thoughts-on-ai-2026/AI/ThoughtsOnAI2026/metal-knight-ai-creativity.png)
+![Metal Knight on AI and creativity](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/main/AI/ThoughtsOnAI2026/metal-knight-ai-creativity.png)
 
 > オレもお前も人間の脳の真価を見誤っていた...
 > 我和你都看錯了人類大腦真正的價值...

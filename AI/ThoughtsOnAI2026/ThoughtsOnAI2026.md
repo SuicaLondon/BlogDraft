@@ -1,6 +1,6 @@
 # What Makes Me Uncomfortable About the AI Hype in 2026
 
-![Who is JSON](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/feat/thoughts-on-ai-2026/AI/ThoughtsOnAI2026/who-is-json.jpg)
+![Who is JSON](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/main/AI/ThoughtsOnAI2026/who-is-json.jpg)
 
 In case anyone's reading comprehension is on par with my former CTO's, let me make this painfully clear: I am not against AI. In fact, I use it so heavily that I can burn through both five-hour limits on my "ChatGPT Pro Max" subscription before 2 p.m. every day with GPT 5.5 medium. I have no doubt that AI has fundamentally changed how we live and work.
 
@@ -24,7 +24,7 @@ Then tools such as Codex and Claude Code become more capable. Agents can do more
 
 There is nothing surprising about this by itself.
 
-![Token tradeoff](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/feat/thoughts-on-ai-2026/AI/ThoughtsOnAI2026/token-tradeoff-en.png)
+![Token tradeoff](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/main/AI/ThoughtsOnAI2026/token-tradeoff-en.png)
 
 An employee's attitude towards AI is not simply a choice between embracing and resisting the tool.
 
@@ -155,7 +155,7 @@ Creativity also includes why you wanted to say something, why you chose this mom
 
 ONE, the author of *One-Punch Man*, makes a similar point through Metal Knight. In more natural English, the exchange reads:
 
-![Metal Knight on AI and creativity](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/feat/thoughts-on-ai-2026/AI/ThoughtsOnAI2026/metal-knight-ai-creativity-en.png)
+![Metal Knight on AI and creativity](https://raw.githubusercontent.com/SuicaLondon/BlogDraft/refs/heads/main/AI/ThoughtsOnAI2026/metal-knight-ai-creativity-en.png)
 
 > Both of us underestimated what makes the human brain valuable.
 >
