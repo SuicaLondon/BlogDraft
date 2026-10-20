@@ -20,7 +20,7 @@
 
 Coding Agent 某種程度上就是 Programming 的 TikTok，不停給你即時回饋、餵你多巴胺。習慣之後，安靜讀完一篇長文、自己把一段需求寫清楚，反而成了很難忍受的事情。鵝自己也有這個問題：明明在做需要專注的工作，卻越來越沒耐心專注。現在就連跟 AI 討論出來的 plan，也要叫 AI summarize。但是有一件事，鵝是完全不敢 outsource 給 AI 做的，就是替需要重複執行任務的 agent 寫 prompt 和 skills。
 
-目前 AI 對自己的了解，其實並沒有比你對他的了解高。什麼樣的 prompt 能抓住模型的 attention，哪些要求需要強調，怎麼用盡量少的 tokens 得到最好的效果，本來就是個技術。鵝甚至可以暴論：現在模型寫出來的超過的prompt，99%都是AI Slop，甚至Codex 寫出來的 prompt，比 Codex 寫前端還要狗屎。可以去 [skills.sh](https://www.skills.sh/) 找幾個 Matt 以外的 frontend developer 寫的熱門 skills，看看那些 description 和prompt，應該就知道鵝在嫌什麼。自己不會寫，又看不出 AI 寫得有多爛，最後只是把這些東西包成 skill，反覆拿來用。
+目前 AI 對自己的了解，其實並沒有比你對他的了解高。什麼樣的 prompt 能抓住模型的 attention，哪些要求需要強調，怎麼用盡量少的 tokens 得到最好的效果，本來就是個技術。鵝甚至可以暴論：現在模型寫出來的 prompt，99% 都是 AI Slop，甚至Codex 寫出來的 prompt，比 Codex 寫前端還要狗屎。可以去 [skills.sh](https://www.skills.sh/) 找幾個 Matt 以外的 frontend developer 寫的熱門 skills，看看那些 description 和prompt，應該就知道鵝在嫌什麼。自己不會寫，又看不出 AI 寫得有多爛，最後只是把這些東西包成 skill，反覆拿來用。
 
 模型換代也會讓原本有效的 prompt 失靈。不同模型有不同的 nature，並不是像模型廠商宣傳的那樣，同一個 task，換上新模型就一定做得更好。哪些要求沒講清楚，哪些寫法已經不適合新模型，你還是得自己判斷。各家廠商每次推出新一代模型，通常也會提供 prompt examples，教你怎麼調整。但以鵝的經驗來說，這些文件的幫助實在有限。尤其是碰到 GPT 6 這種模型，在Codex裡面無論你 Prompt Engineering、Context Engineering ，該做歪還是做歪，該做到一半去玩還是會去玩，這種情況你就需要從 Harness 下手。用hooks或者loop去解決。
 
